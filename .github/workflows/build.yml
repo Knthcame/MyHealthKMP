@@ -33,6 +33,12 @@ jobs:
           lintRelease
           --build-cache --parallel --continue
 
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action/macos@v2
+        if: always()
+        with:
+          files: '**/test-results/**/*.xml'
+
       - name: Install sonar cli
         uses: Warchant/setup-sonar-scanner@v8
 
@@ -68,6 +74,12 @@ jobs:
           arch: x86_64
           working-directory: ./src
           script: ./gradlew clean connectedAndroidTest
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action/macos@v2
+        if: always()
+        with:
+          files: '**/androidTest-results/**/*.xml'
 
   buildAndroid:
     name: Build Android app
