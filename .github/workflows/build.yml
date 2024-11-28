@@ -30,43 +30,6 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Lint & test Kotlin code
-        working-directory: ./src
-        run: ./gradlew clean
-          testReleaseUnitTest
-          iosSimulatorArm64Test
-          desktopTest
-          lintRelease
-          --build-cache --parallel --continue
-
-      - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action/macos@v2
-        if: always()
-        with:
-          files: '**/test-results/**/*.xml'
-
-      - name: Install sonar cli
-        uses: Warchant/setup-sonar-scanner@v8
-
-      - name: SonarQube Cloud Scan
-        run: sonar-scanner
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-  testAndroidInstrumented:
-    name: Run Android instrumented tests
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checking out branch
-        uses: actions/checkout@v4
-
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
@@ -79,13 +42,30 @@ jobs:
           api-level: 34
           arch: x86_64
           working-directory: ./src
-          script: ./gradlew clean connectedAndroidTest
+          script: ./gradlew clean 
+            connectedAndroidTest
+            testReleaseUnitTest
+            iosSimulatorArm64Test
+            desktopTest
+            lintRelease
+            --build-cache --parallel --continue
 
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action/macos@v2
         if: always()
         with:
-          files: '**/androidTest-results/**/*.xml'
+          files: |
+            **/test-results/**/*.xml
+            **/androidTest-results/**/*.xml
+
+      - name: Install sonar cli
+        uses: Warchant/setup-sonar-scanner@v8
+
+      - name: SonarQube Cloud Scan
+        run: sonar-scanner
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   buildAndroid:
     name: Build Android app
