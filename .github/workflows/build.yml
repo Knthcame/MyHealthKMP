@@ -1,4 +1,9 @@
 name: Build
+
+permissions:
+  checks: write
+  pull-requests: write
+
 on:
   workflow_dispatch:
   push:
@@ -6,6 +11,7 @@ on:
       - main
   pull_request:
     types: [opened, synchronize, reopened]
+
 jobs:
   test:
     name: Test & Analyze code
