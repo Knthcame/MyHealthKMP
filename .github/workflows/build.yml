@@ -31,26 +31,20 @@ jobs:
         uses: gradle/actions/setup-gradle@v4
 
       - name: Lint & test Kotlin code
-        uses: reactivecircus/android-emulator-runner@v2
-        with:
-          api-level: 34
-          arch: x86_64
-          working-directory: ./src
-          script: ./gradlew clean 
-            connectedAndroidTest
-            testReleaseUnitTest
-            iosSimulatorArm64Test
-            desktopTest
-            lintRelease
-            --build-cache --parallel --continue
+        working-directory: ./src
+        run: ./gradlew clean
+          testReleaseUnitTest
+          iosSimulatorArm64Test
+          desktopTest
+          lintRelease
+          --build-cache --parallel --continue
 
       - name: Publish Test Results
         uses: EnricoMi/publish-unit-test-result-action/macos@v2
         if: always()
         with:
-          files: |
-            **/test-results/**/*.xml
-            **/androidTest-results/**/*.xml
+          files: '**/test-results/**/*.xml'
+          check_name: 'Kotlin test results'
 
       - name: Install sonar cli
         uses: Warchant/setup-sonar-scanner@v8
@@ -60,6 +54,40 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  testAndroidInstrumented:
+    name: Run Android instrumented tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checking out branch
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: Run Android instrumented tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: x86_64
+          working-directory: ./src
+          script: ./gradlew clean connectedAndroidTest
+
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action/macos@v2
+        if: always()
+        with:
+          files: '**/androidTest-results/**/*.xml'
+          check_name: 'Android instrumented test results'
 
   buildAndroid:
     name: Build Android app
