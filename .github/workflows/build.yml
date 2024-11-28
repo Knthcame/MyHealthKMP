@@ -41,7 +41,7 @@ jobs:
 
       - name: Assemble release build
         working-directory: ./src
-        runs: ./gradlew assembleRelease
+        run: ./gradlew assembleRelease
 
       - name: Get release file apk path
         id: releaseApk
