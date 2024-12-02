@@ -13,4 +13,5 @@ The following libraries are used:
 - [Kotlin-test](https://kotlinlang.org/api/core/kotlin-test/) for unit tests.
 - [JUnit4](https://junit.org/junit4/) for instrumented tests on Android
   - To be migrated to [Compose Multiplatform UI tests](https://www.jetbrains.com/help/kotlin-multiplatform-dev/compose-test.html) when it's a bit more stable (currently experimental)
-- 
+- [Kover](https://github.com/Kotlin/kotlinx-kover) for code coverage of Kotlin code
+  - At the moment, Kover does not provide coverage of Kotlin/Native targets. So, they are excluded from coverage in the sonar configuration.
