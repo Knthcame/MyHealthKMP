@@ -1,0 +1,5 @@
+<resources>
+    <string name="dashboard_title">Dashboard</string>
+    <string name="diary_title">Diary</string>
+    <string name="settings_title">Settings</string>
+</resources>
