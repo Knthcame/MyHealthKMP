@@ -13,6 +13,7 @@ kotlinx-coroutines = "1.9.0"
 uiTestJunit4Android = "1.7.5"
 kover = "0.8.1"
 koin = "4.0.0"
+skie = "0.9.5"
 navigationCompose = "2.8.0-alpha10"
 
 [libraries]
@@ -41,3 +42,4 @@ composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "k
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinXSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
+skie = { id = "co.touchlab.skie", version.ref = "skie" }

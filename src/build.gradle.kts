@@ -8,4 +8,5 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.kotlinXSerialization) apply false
     alias(libs.plugins.kover) apply false
+    alias(libs.plugins.skie) apply false
 }

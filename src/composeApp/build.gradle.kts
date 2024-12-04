@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinXSerialization)
     alias(libs.plugins.kover)
+    alias(libs.plugins.skie)
 }
 
 kotlin {
