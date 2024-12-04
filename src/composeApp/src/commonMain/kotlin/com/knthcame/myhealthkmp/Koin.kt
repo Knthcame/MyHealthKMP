@@ -1,11 +1,11 @@
 package com.knthcame.myhealthkmp
 
+import com.knthcame.myhealthkmp.data.dashboard.repositories.DashboardRepository
+import com.knthcame.myhealthkmp.data.dashboard.repositories.DefaultDashboardRepository
 import com.knthcame.myhealthkmp.data.datetime.repositories.DateTimeRepository
 import com.knthcame.myhealthkmp.data.datetime.repositories.DefaultDateTimeRepository
 import com.knthcame.myhealthkmp.data.datetime.sources.DateTimeDao
 import com.knthcame.myhealthkmp.data.datetime.sources.DefaultDateTimeDao
-import com.knthcame.myhealthkmp.data.diary.repositories.DefaultDiaryRepository
-import com.knthcame.myhealthkmp.data.diary.repositories.DiaryRepository
 import com.knthcame.myhealthkmp.data.diary.sources.DiaryDao
 import com.knthcame.myhealthkmp.data.diary.sources.FakeDiaryDao
 import com.knthcame.myhealthkmp.ui.dashboard.DashboardViewModel
@@ -34,7 +34,7 @@ private val sharedModule = module {
     singleOf(::DefaultDateTimeRepository) { bind<DateTimeRepository>() }
 
     singleOf(::FakeDiaryDao) { bind<DiaryDao>() }
-    singleOf(::DefaultDiaryRepository) { bind<DiaryRepository>() }
+    singleOf(::DefaultDashboardRepository) { bind<DashboardRepository>() }
 
     factory { CoroutineScope(Dispatchers.Main.immediate + SupervisorJob()) }
 
