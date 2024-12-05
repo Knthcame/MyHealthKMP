@@ -25,9 +25,9 @@ class DashboardViewModel(
         ) { current, graph ->
             if (current == null) HeartRateUiState.Missing
             else HeartRateUiState.Available(
-                value = current.bpm.toString(),
+                value = current.bpm,
                 timeStamp = format(current.timeStamp),
-                graphValues = graph,
+                graphValues = graph.sortedBy { item -> item.timeStamp },
             )
         }.stateIn(viewModelScope, SharingStarted.Lazily, HeartRateUiState.Missing)
 

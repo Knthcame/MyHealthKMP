@@ -1,6 +1,16 @@
 package com.knthcame.myhealthkmp.ui.dashboard
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
+import androidx.compose.animation.core.FastOutLinearInEasing
+import androidx.compose.animation.core.FiniteAnimationSpec
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,7 +23,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -32,6 +41,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -82,19 +92,33 @@ private fun HeartRateCard(
     modifier: Modifier = Modifier,
     heartRateUiState: HeartRateUiState,
 ) {
+    val crossFadeAnimationDuration = 600
+    
     Card(modifier = modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier.padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            HeartRateCardHeader(heartRateUiState)
+            HeartRateCardHeader(
+                heartRateUiState = heartRateUiState,
+                crossFadeAnimationSpec = tween(crossFadeAnimationDuration),
+            )
 
             Row(modifier = Modifier.height(IntrinsicSize.Min)) {
-                HeartRateCardValue(heartRateUiState)
-                Spacer(Modifier.sizeIn(minWidth = 16.dp).weight(1f))
-                AnimatedVisibility(heartRateUiState is HeartRateUiState.Available) {
+                HeartRateCardValue(
+                    modifier = Modifier.weight(0.5f),
+                    heartRateUiState = heartRateUiState,
+                    crossFadeAnimationSpec = tween(crossFadeAnimationDuration),
+                )
+
+                AnimatedVisibility(
+                    visible = heartRateUiState is HeartRateUiState.Available,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                    modifier = Modifier.weight(0.5f)
+                ) {
                     HeartRateCardGraph(
-                        modifier = Modifier.fillMaxWidth(fraction = 0.8f).fillMaxHeight(),
+                        modifier = Modifier.fillMaxSize(),
                         values = (heartRateUiState as HeartRateUiState.Available).graphValues,
                     )
                 }
@@ -104,16 +128,35 @@ private fun HeartRateCard(
 }
 
 @Composable
-private fun HeartRateCardHeader(heartRateUiState: HeartRateUiState) {
+private fun HeartRateCardHeader(
+    modifier: Modifier = Modifier,
+    heartRateUiState: HeartRateUiState,
+    crossFadeAnimationSpec: FiniteAnimationSpec<Float> = tween(),
+) {
     Row(
+        modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
+        val pulseTransition = rememberInfiniteTransition()
+
+        val pulseScale by pulseTransition.animateFloat(
+            initialValue = 1f,
+            targetValue = 0.8f,
+            animationSpec = infiniteRepeatable(
+                animation = tween(durationMillis = 1000, easing = FastOutLinearInEasing),
+                repeatMode = RepeatMode.Reverse,
+            )
+        )
+
         Icon(
             painter = painterResource(Res.drawable.heart_rate),
             contentDescription = "Heart rate icon",
             tint = Color.Red,
-            modifier = Modifier.size(20.dp),
+            modifier = Modifier.size(20.dp).graphicsLayer {
+                scaleX = pulseScale
+                scaleY = pulseScale
+            },
         )
         Text(
             text = stringResource(Res.string.dashboard_heart_rate_card_title),
@@ -122,34 +165,49 @@ private fun HeartRateCardHeader(heartRateUiState: HeartRateUiState) {
         Spacer(Modifier.weight(1f))
 
         AnimatedVisibility(visible = heartRateUiState is HeartRateUiState.Available) {
-            Text(
-                text = (heartRateUiState as HeartRateUiState.Available).timeStamp,
-                style = MaterialTheme.typography.bodyMedium,
-            )
+            Crossfade(
+                targetState = (heartRateUiState as HeartRateUiState.Available).timeStamp,
+                animationSpec = crossFadeAnimationSpec,
+            ) { targetState ->
+                Text(
+                    text = targetState,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun HeartRateCardValue(heartRateUiState: HeartRateUiState) {
-    val bpmValue = when (heartRateUiState) {
-        is HeartRateUiState.Available -> heartRateUiState.value
+private fun HeartRateCardValue(
+    modifier: Modifier = Modifier,
+    heartRateUiState: HeartRateUiState,
+    crossFadeAnimationSpec: FiniteAnimationSpec<Float> = tween(),
+) {
+    val bpmText: String = when (heartRateUiState) {
+        is HeartRateUiState.Available -> heartRateUiState.value.toString()
         HeartRateUiState.Missing -> stringResource(Res.string.placeholder)
     }
-    Text(buildAnnotatedString {
-        withStyle(
-            SpanStyle(
-                fontSize = 32.sp,
-                fontWeight = FontWeight.ExtraBold,
-            )
-        ) {
-            append(bpmValue)
-        }
-        append(" ")
-        withStyle(SpanStyle(fontWeight = FontWeight.ExtraBold)) {
-            append(stringResource(Res.string.unit_beats_per_minute))
-        }
-    })
+    Crossfade(
+        targetState = bpmText,
+        animationSpec = crossFadeAnimationSpec,
+        modifier = modifier,
+    ) { targetState ->
+        Text(buildAnnotatedString {
+            withStyle(
+                SpanStyle(
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                )
+            ) {
+                append(targetState)
+            }
+            append(" ")
+            withStyle(SpanStyle(fontWeight = FontWeight.ExtraBold)) {
+                append(stringResource(Res.string.unit_beats_per_minute))
+            }
+        })
+    }
 }
 
 @Composable
