@@ -1,5 +1,6 @@
 package com.knthcame.myhealthkmp.ui.dashboard
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -91,11 +92,12 @@ private fun HeartRateCard(
             Row(modifier = Modifier.height(IntrinsicSize.Min)) {
                 HeartRateCardValue(heartRateUiState)
                 Spacer(Modifier.sizeIn(minWidth = 16.dp).weight(1f))
-                if (heartRateUiState is HeartRateUiState.Available)
+                AnimatedVisibility(heartRateUiState is HeartRateUiState.Available) {
                     HeartRateCardGraph(
                         modifier = Modifier.fillMaxWidth(fraction = 0.8f).fillMaxHeight(),
-                        values = heartRateUiState.graphValues,
+                        values = (heartRateUiState as HeartRateUiState.Available).graphValues,
                     )
+                }
             }
         }
     }
@@ -119,11 +121,12 @@ private fun HeartRateCardHeader(heartRateUiState: HeartRateUiState) {
         )
         Spacer(Modifier.weight(1f))
 
-        if (heartRateUiState is HeartRateUiState.Available)
+        AnimatedVisibility(visible = heartRateUiState is HeartRateUiState.Available) {
             Text(
-                text = heartRateUiState.timeStamp,
+                text = (heartRateUiState as HeartRateUiState.Available).timeStamp,
                 style = MaterialTheme.typography.bodyMedium,
             )
+        }
     }
 }
 
@@ -151,8 +154,8 @@ private fun HeartRateCardValue(heartRateUiState: HeartRateUiState) {
 
 @Composable
 fun HeartRateCardGraph(modifier: Modifier, values: List<HeartRate>) {
-    val minInstant = remember { values.minOf { item -> item.timeStamp } }
-    val maxInstant = remember { values.maxOf { item -> item.timeStamp } }
+    val minInstant = remember(values) { values.minOf { item -> item.timeStamp } }
+    val maxInstant = remember(values) { values.maxOf { item -> item.timeStamp } }
     val maxValue = 130
     val minValue = 60
 
