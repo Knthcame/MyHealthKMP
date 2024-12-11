@@ -1,5 +1,4 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
@@ -10,6 +9,7 @@ plugins {
     alias(libs.plugins.kotlinXSerialization)
     alias(libs.plugins.kover)
     alias(libs.plugins.skie)
+    alias(libs.plugins.mokkery)
 }
 
 kotlin {
@@ -64,6 +64,8 @@ kotlin {
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
+            implementation(libs.kotlinx.coroutines.test)
+            implementation(libs.turbine)
         }
     }
 }

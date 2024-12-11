@@ -29,6 +29,7 @@ class DefaultDashboardRepository(
 
     override val graphHeartRates: Flow<List<HeartRate>> =
         diaryDao.heartRates.combine(timeTicker) { heartRates, _ ->
-            heartRates.filter { item -> item.timeStamp > (dateTimeRepository.now - graphInterval) }
+            val referenceDateTime = dateTimeRepository.now - graphInterval
+            heartRates.filter { item -> item.timeStamp > referenceDateTime }
         }
 }

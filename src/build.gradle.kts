@@ -9,4 +9,5 @@ plugins {
     alias(libs.plugins.kotlinXSerialization) apply false
     alias(libs.plugins.kover) apply false
     alias(libs.plugins.skie) apply false
+    alias(libs.plugins.mokkery) apply false
 }
