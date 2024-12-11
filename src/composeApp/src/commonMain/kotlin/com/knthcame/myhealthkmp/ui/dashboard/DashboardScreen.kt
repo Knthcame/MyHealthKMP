@@ -41,6 +41,7 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -73,7 +74,10 @@ fun DashboardScreen(heartRateUiState: HeartRateUiState) {
         topBar = {
             CenterAlignedTopAppBar(
                 title = {
-                    Text(stringResource(Res.string.dashboard_title))
+                    Text(
+                        text = stringResource(Res.string.dashboard_title),
+                        modifier = Modifier.testTag("dashboardTopBarTitle"),
+                    )
                 },
             )
         },
