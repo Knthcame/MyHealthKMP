@@ -1,0 +1,8 @@
+<resources>
+    <string name="placeholder">---</string>
+    <string name="dashboard_title">Dashboard</string>
+    <string name="diary_title">Diary</string>
+    <string name="settings_title">Settings</string>
+    <string name="dashboard_heart_rate_card_title">Heart rate</string>
+    <string name="unit_beats_per_minute">bpm</string>
+</resources>
