@@ -5,7 +5,17 @@
 
 version: 2
 updates:
-  - package-ecosystem: "gradle" # See documentation for possible values
-    directory: "/src/" # Location of package manifests
+  - package-ecosystem: "gradle"
+    directory: "/src/"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "github-actions"
+    directory: "/.github/"
+    schedule:
+      interval: "weekly"
+
+  - package-ecosystem: "swift"
+    directory: "/src/iosApp/"
     schedule:
       interval: "weekly"
