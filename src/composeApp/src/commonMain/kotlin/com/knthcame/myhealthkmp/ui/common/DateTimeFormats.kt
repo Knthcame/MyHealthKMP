@@ -14,7 +14,8 @@ enum class DateTimeStyle {
 /**
  *  Formats the local date according to the current system's locale.
  *
- *  @param dateTimeStyle the format style to be used.
+ * @param dateTimeStyle the format style to be used. Only [DateTimeStyle.Short] and [DateTimeStyle.Medium]
+ * are supported on Android & Desktop.
  */
 expect fun LocalDateTime.formatWithCurrentLocale(dateTimeStyle: DateTimeStyle = DateTimeStyle.Medium): String
 
