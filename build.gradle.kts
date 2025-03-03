@@ -14,6 +14,8 @@ plugins {
     alias(libs.plugins.kover) apply false
     alias(libs.plugins.skie) apply false
     alias(libs.plugins.mokkery) apply false
+    alias(libs.plugins.ksp) apply false
+    alias(libs.plugins.androidx.room) apply false
     alias(libs.plugins.detekt) apply false
     alias(libs.plugins.ktlint) apply false
 }
