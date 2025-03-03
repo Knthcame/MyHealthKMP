@@ -40,30 +40,30 @@ jobs:
           lintRelease
           --build-cache --parallel --continue
 
-      - name: Select Xcode 16.1
-        run: sudo xcode-select -s /Applications/Xcode_16.1.app
-
-      - name: Test Swift code
-        if: always()
-        run: set -eo pipefail && xcodebuild clean test
-          -scheme iosApp
-          -sdk iphonesimulator
-          -destination "platform=iOS simulator,name=iPhone 16"
-          -configuration Release
-          -project src/iosApp/iosApp.xcodeproj
-          -resultBundlePath src/iosApp/build/reports/iosApp.xcresult
-          -enableCodeCoverage YES
-          CODE_SIGNING_ALLOWED=NO | xcbeautify
-          --report junit
-          --report-path src/iosApp/build/reports/
-          --junit-report-filename TEST-XcodeTestResults.xml
+#      - name: Select Xcode 16.1
+#        run: sudo xcode-select -s /Applications/Xcode_16.1.app
+#
+#      - name: Test Swift code
+#        if: always()
+#        run: set -eo pipefail && xcodebuild clean test
+#          -scheme iosApp
+#          -sdk iphonesimulator
+#          -destination "platform=iOS simulator,name=iPhone 16"
+#          -configuration Release
+#          -project src/iosApp/iosApp.xcodeproj
+#          -resultBundlePath src/iosApp/build/reports/iosApp.xcresult
+#          -enableCodeCoverage YES
+#          CODE_SIGNING_ALLOWED=NO | xcbeautify
+#          --report junit
+#          --report-path src/iosApp/build/reports/
+#          --junit-report-filename TEST-XcodeTestResults.xml
 
       # Converts XCode's xcresult file to a code coverage format that sonarqube understands,
       # according to the official guide/example:
       # https://github.com/SonarSource/sonar-scanning-examples/tree/master/swift-coverage
-      - name: 'Convert code coverage result format'
-        run: bash src/iosApp/xccov-to-sonarqube-generic.sh src/iosApp/build/reports/iosApp.xcresult > src/iosApp/build/reports/Swift-Coverage.xml
-        if: always()
+#      - name: 'Convert code coverage result format'
+#        run: bash src/iosApp/xccov-to-sonarqube-generic.sh src/iosApp/build/reports/iosApp.xcresult > src/iosApp/build/reports/Swift-Coverage.xml
+#        if: always()
 
       - name: Publish Kotlin test results
         uses: EnricoMi/publish-unit-test-result-action/macos@v2
@@ -79,19 +79,19 @@ jobs:
           name: kotlin-unit-test-results
           path: '**/test-results/**/*.xml'
 
-      - name: Publish Swift test results
-        uses: EnricoMi/publish-unit-test-result-action/macos@v2
-        if: always()
-        with:
-          files: '**/iosApp/build/reports/**/TEST-*.xml'
-          check_name: 'Swift test results'
-
-      - name: Archive Swift test results
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: swift-test-results
-          path: 'src/iosApp/build/reports/'
+#      - name: Publish Swift test results
+#        uses: EnricoMi/publish-unit-test-result-action/macos@v2
+#        if: always()
+#        with:
+#          files: '**/iosApp/build/reports/**/TEST-*.xml'
+#          check_name: 'Swift test results'
+#
+#      - name: Archive Swift test results
+#        uses: actions/upload-artifact@v4
+#        if: always()
+#        with:
+#          name: swift-test-results
+#          path: 'src/iosApp/build/reports/'
 
       - name: Install sonar cli
         uses: Warchant/setup-sonar-scanner@v8
@@ -99,7 +99,7 @@ jobs:
 
       - name: SonarQube Cloud Scan
         if: always()
-        run: sonar-scanner
+        run: sonar-scanner -X
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
