@@ -57,7 +57,7 @@ class DateTimeFormatsTest {
     }
 
     @Test
-    fun formatWithCurrentLocale_returnsFormattedDateTime_onLongDateTimeFormat() {
+    fun formatWithCurrentLocale_returnsFormattedDateTime_onLongFormat() {
         val formatter = NSDateFormatter()
         formatter.dateStyle = NSDateFormatterLongStyle
         formatter.timeStyle = NSDateFormatterLongStyle
@@ -90,7 +90,7 @@ class DateTimeFormatsTest {
         formatter.locale = NSLocale.currentLocale
         val expected = formatter.stringFromDate(nsDateTime)
 
-        val actual = localTestDateTime.formatWithCurrentLocale(DateTimeStyle.Short)
+        val actual = localTestDateTime.date.formatWithCurrentLocale(DateTimeStyle.Short)
 
         assertEquals(expected, actual)
     }
@@ -103,7 +103,7 @@ class DateTimeFormatsTest {
         formatter.locale = NSLocale.currentLocale
         val expected = formatter.stringFromDate(nsDateTime)
 
-        val actual = localTestDateTime.formatWithCurrentLocale(DateTimeStyle.Medium)
+        val actual = localTestDateTime.date.formatWithCurrentLocale(DateTimeStyle.Medium)
 
         assertEquals(expected, actual)
     }
@@ -116,7 +116,7 @@ class DateTimeFormatsTest {
         formatter.locale = NSLocale.currentLocale
         val expected = formatter.stringFromDate(nsDateTime)
 
-        val actual = localTestDateTime.formatWithCurrentLocale(DateTimeStyle.Long)
+        val actual = localTestDateTime.date.formatWithCurrentLocale(DateTimeStyle.Long)
 
         assertEquals(expected, actual)
     }
@@ -129,7 +129,7 @@ class DateTimeFormatsTest {
         formatter.locale = NSLocale.currentLocale
         val expected = formatter.stringFromDate(nsDateTime)
 
-        val actual = localTestDateTime.formatWithCurrentLocale(DateTimeStyle.Full)
+        val actual = localTestDateTime.date.formatWithCurrentLocale(DateTimeStyle.Full)
 
         assertEquals(expected, actual)
     }
@@ -142,7 +142,7 @@ class DateTimeFormatsTest {
         formatter.locale = NSLocale.currentLocale
         val expected = formatter.stringFromDate(nsDateTime)
 
-        val actual = localTestDateTime.formatWithCurrentLocale(DateTimeStyle.Short)
+        val actual = localTestDateTime.time.formatWithCurrentLocale(DateTimeStyle.Short)
 
         assertEquals(expected, actual)
     }
@@ -155,7 +155,7 @@ class DateTimeFormatsTest {
         formatter.locale = NSLocale.currentLocale
         val expected = formatter.stringFromDate(nsDateTime)
 
-        val actual = localTestDateTime.formatWithCurrentLocale(DateTimeStyle.Medium)
+        val actual = localTestDateTime.time.formatWithCurrentLocale(DateTimeStyle.Medium)
 
         assertEquals(expected, actual)
     }
@@ -168,7 +168,7 @@ class DateTimeFormatsTest {
         formatter.locale = NSLocale.currentLocale
         val expected = formatter.stringFromDate(nsDateTime)
 
-        val actual = localTestDateTime.formatWithCurrentLocale(DateTimeStyle.Long)
+        val actual = localTestDateTime.time.formatWithCurrentLocale(DateTimeStyle.Long)
 
         assertEquals(expected, actual)
     }
@@ -181,7 +181,7 @@ class DateTimeFormatsTest {
         formatter.locale = NSLocale.currentLocale
         val expected = formatter.stringFromDate(nsDateTime)
 
-        val actual = localTestDateTime.formatWithCurrentLocale(DateTimeStyle.Full)
+        val actual = localTestDateTime.time.formatWithCurrentLocale(DateTimeStyle.Full)
 
         assertEquals(expected, actual)
     }
