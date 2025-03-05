@@ -6,8 +6,11 @@ import com.knthcame.myhealthkmp.data.datetime.repositories.DateTimeRepository
 import com.knthcame.myhealthkmp.data.datetime.repositories.DefaultDateTimeRepository
 import com.knthcame.myhealthkmp.data.datetime.sources.DateTimeDao
 import com.knthcame.myhealthkmp.data.datetime.sources.DefaultDateTimeDao
-import com.knthcame.myhealthkmp.data.diary.sources.DiaryDao
+import com.knthcame.myhealthkmp.data.diary.repositories.DefaultDiaryRepository
+import com.knthcame.myhealthkmp.data.diary.repositories.DiaryRepository
 import com.knthcame.myhealthkmp.ui.dashboard.DashboardViewModel
+import com.knthcame.myhealthkmp.ui.diary.AddEventViewModel
+import com.knthcame.myhealthkmp.ui.diary.DiaryViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -34,9 +37,13 @@ private val sharedModule = module {
 
     singleOf(::DefaultDashboardRepository) { bind<DashboardRepository>() }
 
+    singleOf(::DefaultDiaryRepository) { bind<DiaryRepository>() }
+
     factory { CoroutineScope(Dispatchers.Main.immediate + SupervisorJob()) }
 
     viewModelOf(::DashboardViewModel)
+    viewModelOf(::DiaryViewModel)
+    viewModelOf(::AddEventViewModel)
 }
 
 /** The module from the platform-specific parts of the shared project */
