@@ -57,6 +57,7 @@ kotlin {
         implementation(libs.androidx.lifecycle.viewmodel)
         implementation(libs.androidx.lifecycle.runtime.compose)
         implementation(libs.jetbrains.navigation.compose)
+        implementation(libs.kotlinx.coroutines)
         implementation(libs.kotlinx.datetime)
         implementation(libs.kotlinx.serialization.json)
         implementation(libs.koin.core)
