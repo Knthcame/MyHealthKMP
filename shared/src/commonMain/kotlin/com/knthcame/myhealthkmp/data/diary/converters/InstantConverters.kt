@@ -5,12 +5,8 @@ import kotlin.time.Instant
 
 class InstantConverters {
     @TypeConverter
-    fun fromTimestamp(value: Long): Instant {
-        return Instant.fromEpochMilliseconds(value)
-    }
+    fun fromTimestamp(value: Long): Instant = Instant.fromEpochMilliseconds(value)
 
     @TypeConverter
-    fun instantToTimestamp(instant: Instant): Long {
-        return instant.toEpochMilliseconds()
-    }
+    fun instantToTimestamp(instant: Instant): Long = instant.toEpochMilliseconds()
 }

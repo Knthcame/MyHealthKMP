@@ -9,8 +9,9 @@ import org.koin.dsl.module
 /** The module from the platform-specific parts of the shared project */
 actual val platformModule: Module =
     module {
-        val diaryDatabase = buildDiaryDatabase { dbName ->
-            getDiaryDatabaseBuilder(dbName)
-        }
+        val diaryDatabase =
+            buildDiaryDatabase { dbName ->
+                getDiaryDatabaseBuilder(dbName)
+            }
         single<DiaryDao> { diaryDatabase.getDiaryDao() }
     }
