@@ -6,8 +6,8 @@ import androidx.room.RoomDatabase
 import androidx.room.RoomDatabaseConstructor
 import androidx.room.TypeConverters
 import androidx.sqlite.driver.bundled.BundledSQLiteDriver
-import com.knthcame.myhealthkmp.data.diary.converters.DurationConverters
-import com.knthcame.myhealthkmp.data.diary.converters.InstantConverters
+import com.knthcame.myhealthkmp.data.diary.converters.DurationConverter
+import com.knthcame.myhealthkmp.data.diary.converters.InstantConverter
 import com.knthcame.myhealthkmp.data.diary.model.Activity
 import com.knthcame.myhealthkmp.data.diary.model.HeartRate
 import com.knthcame.myhealthkmp.data.diary.model.Sleep
@@ -16,7 +16,7 @@ import kotlinx.coroutines.IO
 
 @Database(entities = [HeartRate::class, Sleep::class, Activity::class], version = 1)
 @ConstructedBy(DiaryDatabaseConstructor::class)
-@TypeConverters(InstantConverters::class, DurationConverters::class)
+@TypeConverters(InstantConverter::class, DurationConverter::class)
 abstract class DiaryDatabase : RoomDatabase() {
     abstract fun getDiaryDao(): DiaryDao
 }
