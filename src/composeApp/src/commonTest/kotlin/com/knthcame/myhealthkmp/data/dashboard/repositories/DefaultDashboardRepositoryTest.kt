@@ -42,7 +42,7 @@ class DefaultDashboardRepositoryTest {
 
     @Test
     fun getCurrentHeartRate_returnsHeartRate_whenSingleMeasurementAvailable() = runTest {
-        val expected = HeartRate(80.0, Clock.System.now())
+        val expected = HeartRate(bpm = 80.0, timeStamp = Clock.System.now())
         every { diaryDao.heartRates } returns flowOf(listOf(expected))
         initRepository()
 
@@ -54,12 +54,12 @@ class DefaultDashboardRepositoryTest {
 
     @Test
     fun getCurrentHeartRate_returnsLatestHeartRate_whenMultipleMeasurementsAvailable() = runTest {
-        val expected = HeartRate(80.0, Clock.System.now())
+        val expected = HeartRate(bpm = 80.0, timeStamp = Clock.System.now())
         every { diaryDao.heartRates } returns flowOf(
             listOf(
-                HeartRate(100.5, Clock.System.now() - 2.hours),
+                HeartRate(bpm = 100.5, timeStamp = Clock.System.now() - 2.hours),
                 expected,
-                HeartRate(150.0, Clock.System.now() - 5.minutes),
+                HeartRate(bpm = 150.0, timeStamp = Clock.System.now() - 5.minutes),
             )
         )
         initRepository()
@@ -87,11 +87,11 @@ class DefaultDashboardRepositoryTest {
     @Test
     fun getGraphHeartRates_returnsFilteredList_WhenDataAvailable() = runTest {
         val now = Clock.System.now()
-        val expected = HeartRate(80.0, now - 2.99.hours)
+        val expected = HeartRate(bpm = 80.0, timeStamp = now - 2.99.hours)
         every { diaryDao.heartRates } returns flowOf(
             listOf(
                 expected,
-                HeartRate(190.0, now - 3.hours),
+                HeartRate(bpm = 190.0, timeStamp = now - 3.hours),
             )
         )
         every { dateTimeRepository.now } returns now
@@ -114,8 +114,8 @@ class DefaultDashboardRepositoryTest {
         val now = Clock.System.now()
         every { diaryDao.heartRates } returns flowOf(
             listOf(
-                HeartRate(80.0, now - (3.hours - 10.seconds)),
-                HeartRate(190.0, now - 3.hours),
+                HeartRate(bpm = 80.0, timeStamp = now - (3.hours - 10.seconds)),
+                HeartRate(bpm = 190.0, timeStamp = now - 3.hours),
             )
         )
         every { dateTimeRepository.now } sequentiallyReturns listOf(now, now + 1.minutes)

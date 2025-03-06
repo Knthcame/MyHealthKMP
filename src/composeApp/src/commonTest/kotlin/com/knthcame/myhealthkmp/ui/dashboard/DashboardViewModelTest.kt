@@ -55,7 +55,7 @@ class DashboardViewModelTest {
         every { dashboardRepository.currentHeartRate } returns flowOf(null)
         every { dashboardRepository.graphHeartRates } returns flowOf(
             listOf(
-                HeartRate(80.0, Clock.System.now())
+                HeartRate(bpm = 80.0, timeStamp = Clock.System.now())
             )
         )
 
@@ -70,7 +70,7 @@ class DashboardViewModelTest {
 
     @Test
     fun heartRateState_returnsCurrentValue_whenCurrentHearRateAvailable() = runTest {
-        val expected = HeartRate(74.8, Clock.System.now())
+        val expected = HeartRate(bpm = 74.8, timeStamp = Clock.System.now())
         every { dashboardRepository.currentHeartRate } returns flowOf(expected)
         every { dashboardRepository.graphHeartRates } returns flowOf(listOf(expected))
         initViewmodel()
@@ -85,7 +85,7 @@ class DashboardViewModelTest {
 
     @Test
     fun heartRateState_returnsFormattedTime_whenCurrentHeartRateIsFromToday() = runTest {
-        val expected = HeartRate(74.8, Clock.System.now())
+        val expected = HeartRate(bpm = 74.8, timeStamp = Clock.System.now())
         every { dashboardRepository.currentHeartRate } returns flowOf(expected)
         every { dashboardRepository.graphHeartRates } returns flowOf(listOf(expected))
         initViewmodel()
@@ -109,7 +109,7 @@ class DashboardViewModelTest {
         every { dateTimeRepository.localNow } returns startOfDay
         every { dateTimeRepository.systemTimeZone } returns timeZone
 
-        val expected = HeartRate(74.8, utcDateTime - 1.seconds)
+        val expected = HeartRate(bpm = 74.8, timeStamp = utcDateTime - 1.seconds)
         every { dashboardRepository.currentHeartRate } returns flowOf(expected)
         every { dashboardRepository.graphHeartRates } returns flowOf(listOf(expected))
 
@@ -130,8 +130,8 @@ class DashboardViewModelTest {
     @Test
     fun heartRateState_ordersGraphList_whenAvailable() = runTest {
         val unorderedList = listOf(
-            HeartRate(80.2, Clock.System.now() - 4.hours),
-            HeartRate(94.1, Clock.System.now())
+            HeartRate(bpm = 80.2, timeStamp = Clock.System.now() - 4.hours),
+            HeartRate(bpm = 94.1, timeStamp = Clock.System.now())
         )
         val orderedList = unorderedList.sortedBy { item -> item.timeStamp }
 
