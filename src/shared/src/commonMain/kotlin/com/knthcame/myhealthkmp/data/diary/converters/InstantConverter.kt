@@ -3,7 +3,7 @@ package com.knthcame.myhealthkmp.data.diary.converters
 import androidx.room.TypeConverter
 import kotlin.time.Instant
 
-class InstantConverters {
+class InstantConverter {
     @TypeConverter
     fun fromTimestamp(value: Long): Instant {
         return Instant.fromEpochMilliseconds(value)

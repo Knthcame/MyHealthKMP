@@ -40,6 +40,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -51,6 +52,7 @@ import com.knthcame.myhealthkmp.ui.common.DefaultScaffold
 import com.knthcame.myhealthkmp.ui.common.formatWithCurrentLocale
 import com.knthcame.myhealthkmp.ui.common.mutableStateMapSaver
 import com.knthcame.myhealthkmp.ui.theme.myHealthColorScheme
+import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import myhealthkmp.shared.generated.resources.Res
 import myhealthkmp.shared.generated.resources.action_cancel
@@ -268,14 +270,18 @@ private fun DiaryEventItem(
     modifier: Modifier = Modifier,
 ) {
     var deleteEventConfirmationDialogIsVisible by remember { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
     val dismissState = rememberSwipeToDismissBoxState()
-    deleteEventConfirmationDialogIsVisible = dismissState.currentValue == SwipeToDismissBoxValue.EndToStart
 
     SwipeToDismissBox(
         state = dismissState,
         enableDismissFromStartToEnd = false,
         backgroundContent = {
             DiaryEventDismissBackground(dismissState)
+        },
+        onDismiss = { swipeToDismissBoxValue ->
+            deleteEventConfirmationDialogIsVisible =
+                swipeToDismissBoxValue == SwipeToDismissBoxValue.EndToStart
         },
         modifier = modifier,
     ) {
@@ -285,7 +291,10 @@ private fun DiaryEventItem(
     if (deleteEventConfirmationDialogIsVisible) {
         DeleteEventConfirmationDialog(
             event = event,
-            onDismissRequest = { deleteEventConfirmationDialogIsVisible = false },
+            onDismissRequest = {
+                deleteEventConfirmationDialogIsVisible = false
+                scope.launch { dismissState.reset() }
+            },
             onDeleteEventConfirmed = onDeleteEventConfirmed,
         )
     }
