@@ -16,7 +16,7 @@ kover = "0.9.1"
 koin = "4.0.2"
 skie = "0.10.1"
 mokkery = "2.7.1"
-navigationCompose = "2.8.0-alpha10"
+navigationCompose = "2.9.0-alpha14"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
