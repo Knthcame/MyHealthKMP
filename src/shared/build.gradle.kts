@@ -1,3 +1,4 @@
+import dev.mokkery.MockMode
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -84,4 +85,8 @@ dependencies {
 
 room {
     schemaDirectory("$projectDir/schemas")
+}
+
+mokkery {
+    defaultMockMode.set(MockMode.autoUnit)
 }
