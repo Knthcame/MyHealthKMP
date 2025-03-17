@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.knthcame.myhealthkmp.ui.dashboard.DashboardScreenRoute
-import com.knthcame.myhealthkmp.ui.diary.DiaryScreenRoute
+import com.knthcame.myhealthkmp.ui.diary.diaryNavigation
 import com.knthcame.myhealthkmp.ui.settings.SettingsScreenRoute
 import kotlinx.serialization.Serializable
 
@@ -35,9 +35,7 @@ fun HomeNavHost(
         composable<Dashboard> {
             DashboardScreenRoute()
         }
-        composable<Diary> {
-            DiaryScreenRoute(onNavigationIconClick = { navController.popBackStack() })
-        }
+        diaryNavigation<Diary>(navController)
         composable<Settings> {
             SettingsScreenRoute(onNavigationIconClick = { navController.popBackStack() })
         }
