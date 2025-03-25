@@ -15,7 +15,7 @@ uiTestJunit4Android = "1.7.8"
 kover = "0.9.1"
 koin = "4.0.2"
 skie = "0.10.1"
-mokkery = "2.7.1"
+mokkery = "2.7.2"
 navigationCompose = "2.8.0-alpha10"
 
 [libraries]
