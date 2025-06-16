@@ -40,7 +40,7 @@ private data class DiaryUserInputsState(
 }
 
 class AddEventViewModel(
-    private val logbookRepository: DiaryRepository,
+    private val diaryRepository: DiaryRepository,
     private val dateTimeRepository: DateTimeRepository,
     private val viewModelScope: CoroutineScope,
 ) : ViewModel(viewModelScope) {
@@ -111,7 +111,7 @@ class AddEventViewModel(
                     uiState.value.entryTime,
                 ).toInstant(currentTimeZone)
 
-            logbookRepository.save(
+            diaryRepository.save(
                 DiaryEvent(
                     value = uiState.value.value,
                     timeStamp = timeStamp,
