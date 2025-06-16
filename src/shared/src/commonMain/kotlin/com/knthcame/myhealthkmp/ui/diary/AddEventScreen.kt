@@ -288,14 +288,18 @@ fun EventTypePicker(
         Text(stringResource(Res.string.add_event_type_picker_title))
         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             items(DiaryEvent.Type.entries) { item ->
-                LogbookEntryTypeItem(selectedEntryType, item, onEditEntryType)
+                EventTypeItem(
+                    selectedEntryType = selectedEntryType,
+                    item = item,
+                    onEditEntryType = onEditEntryType,
+                )
             }
         }
     }
 }
 
 @Composable
-private fun LogbookEntryTypeItem(
+private fun EventTypeItem(
     selectedEntryType: DiaryEvent.Type,
     item: DiaryEvent.Type,
     onEditEntryType: (DiaryEvent.Type) -> Unit,
