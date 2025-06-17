@@ -1,3 +1,4 @@
+import dev.mokkery.MockMode
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -10,6 +11,8 @@ plugins {
     alias(libs.plugins.kover)
     alias(libs.plugins.skie)
     alias(libs.plugins.mokkery)
+    alias(libs.plugins.room)
+    alias(libs.plugins.ksp)
 }
 
 kotlin {
@@ -18,7 +21,7 @@ kotlin {
             jvmTarget.set(JvmTarget.JVM_11)
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -27,14 +30,16 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            // Required when using NativeSQLiteDriver
+            linkerOpts.add("-lsqlite3")
         }
     }
-    
+
     jvm("desktop")
-    
+
     sourceSets {
         val desktopMain by getting
-        
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -57,10 +62,13 @@ kotlin {
             implementation(libs.jetbrains.navigation.compose)
             implementation(libs.kotlinx.datetime)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.coroutines)
             implementation(libs.koin.core)
             implementation(libs.koin.compose)
             implementation(libs.koin.compose.viewmodel)
             implementation(libs.koin.compose.viewmodel.navigation)
+            implementation(libs.androidx.room.runtime)
+            implementation(libs.androidx.sqlite.bundled)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -102,12 +110,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-}
 
-dependencies {
-    debugImplementation(compose.uiTooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-    androidTestImplementation(libs.androidx.ui.test.junit4.android)
+    dependencies {
+        debugImplementation(compose.uiTooling)
+        debugImplementation(libs.androidx.ui.test.manifest)
+        androidTestImplementation(libs.androidx.ui.test.junit4.android)
+
+    }
 }
 
 compose.desktop {
@@ -119,5 +128,24 @@ compose.desktop {
             packageName = "com.knthcame.myhealthkmp"
             packageVersion = "1.0.0"
         }
+    }
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
+mokkery {
+    defaultMockMode.set(MockMode.autoUnit)
+}
+
+dependencies {
+    listOf(
+        "kspAndroid",
+        // "kspJvm",
+        "kspIosSimulatorArm64",
+        "kspIosArm64",
+    ).forEach {
+        add(it, libs.androidx.room.compiler)
     }
 }

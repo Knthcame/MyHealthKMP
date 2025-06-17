@@ -7,6 +7,9 @@ import androidx.compose.material3.Shapes
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ReadOnlyComposable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.unit.dp
 
 private val lightScheme = lightColorScheme(
@@ -85,6 +88,15 @@ private val darkScheme = darkColorScheme(
     surfaceContainerHighest = surfaceContainerHighestDark,
 )
 
+private val LocalColors =
+    staticCompositionLocalOf<MyHealthColorPalette> { MyHealthColorPalette.Light }
+
+@Suppress("UnusedReceiverParameter")
+val MaterialTheme.myHealthColorScheme: MyHealthColorPalette
+    @Composable
+    @ReadOnlyComposable
+    get() = LocalColors.current
+
 /** Theme created with [Material theme builder](https://material-foundation.github.io/material-theme-builder/) */
 @Composable
 fun MyHealthTheme(
@@ -104,11 +116,18 @@ fun MyHealthTheme(
         extraLarge = RoundedCornerShape(16.dp),
     )
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        shapes = shapes,
-        typography = AppTypography,
-        content = content
-    )
+    val localColors = when {
+        darkTheme -> MyHealthColorPalette.Dark
+        else -> MyHealthColorPalette.Light
+    }
+
+    CompositionLocalProvider(LocalColors provides localColors) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = AppTypography,
+            shapes = shapes,
+            content = content,
+        )
+    }
 }
 
