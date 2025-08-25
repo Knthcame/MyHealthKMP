@@ -14,7 +14,7 @@ turbine = "1.2.0"
 uiTestJunit4Android = "1.7.8"
 kover = "0.9.1"
 koin = "4.1.0"
-skie = "0.10.2"
+skie = "0.10.6"
 mokkery = "2.7.2"
 navigationCompose = "2.9.0-beta02"
 
