@@ -1,9 +1,9 @@
 package com.knthcame.myhealthkmp.ui
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.knthcame.myhealthkmp.ui.theme.MyHealthTheme
-import org.jetbrains.compose.ui.tooling.preview.Preview
 import org.koin.compose.KoinContext
 
 @Composable

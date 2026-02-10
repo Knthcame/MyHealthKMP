@@ -1,8 +1,8 @@
 package com.knthcame.myhealthkmp.data.datetime.sources
 
-import kotlinx.datetime.Clock
-import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 class DefaultDateTimeDao : DateTimeDao {
     override val now: Instant

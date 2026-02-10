@@ -1,6 +1,6 @@
 package com.knthcame.myhealthkmp.data.diary.model
 
-import kotlinx.datetime.Instant
+import kotlin.time.Instant
 
 /**
  * Contains the beats per minute ([bpm]) and the [timeStamp] when it was measured

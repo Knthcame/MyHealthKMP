@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.datetime.Instant
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Instant
 
 class DashboardViewModel(
     dashboardRepository: DashboardRepository,
