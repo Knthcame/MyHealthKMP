@@ -1,6 +1,5 @@
 package com.knthcame.myhealthkmp.ui.common
 
-import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toJavaLocalDateTime
@@ -12,6 +11,7 @@ import kotlin.test.BeforeTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
+import kotlin.time.Clock
 
 class DateTimeFormatsTest {
     private lateinit var localTestDateTime: LocalDateTime

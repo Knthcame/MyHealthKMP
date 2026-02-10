@@ -49,7 +49,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.knthcame.myhealthkmp.data.diary.model.HeartRate
-import kotlinx.datetime.Instant
 import myhealthkmp.composeapp.generated.resources.Res
 import myhealthkmp.composeapp.generated.resources.dashboard_heart_rate_card_title
 import myhealthkmp.composeapp.generated.resources.dashboard_title
@@ -59,6 +58,7 @@ import myhealthkmp.composeapp.generated.resources.unit_beats_per_minute
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
+import kotlin.time.Instant
 
 @Composable
 fun DashboardScreenRoute(viewModel: DashboardViewModel = koinViewModel()) {
@@ -96,7 +96,7 @@ private fun HeartRateCard(
     heartRateUiState: HeartRateUiState,
 ) {
     val crossFadeAnimationDuration = 600
-    
+
     Card(modifier = modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier.padding(16.dp),
