@@ -14,7 +14,7 @@ plugins {
 
 kotlin {
     androidLibrary {
-        namespace = "com.knthcame.myhealthkmp.common"
+        namespace = "com.knthcame.myhealthkmp.shared"
         compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
 
@@ -28,7 +28,7 @@ kotlin {
             isIncludeAndroidResources = true
         }
     }
-    
+
     listOf(
         iosX64(),
         iosArm64(),
@@ -39,7 +39,7 @@ kotlin {
             isStatic = true
         }
     }
-    
+
     jvm("desktop")
 
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
@@ -68,5 +68,4 @@ kotlin {
 
 dependencies {
     androidRuntimeClasspath(libs.jetbrains.compose.ui.tooling)
-    //androidRuntimeClasspath(libs.androidx.ui.test.manifest)
 }
