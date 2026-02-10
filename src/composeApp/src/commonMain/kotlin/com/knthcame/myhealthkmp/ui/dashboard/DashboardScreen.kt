@@ -96,7 +96,7 @@ private fun HeartRateCard(
     heartRateUiState: HeartRateUiState,
 ) {
     val crossFadeAnimationDuration = 600
-    
+
     Card(modifier = modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier.padding(16.dp),

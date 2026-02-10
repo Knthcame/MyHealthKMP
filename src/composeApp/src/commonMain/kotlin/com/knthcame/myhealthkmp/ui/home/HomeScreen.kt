@@ -3,13 +3,6 @@ package com.knthcame.myhealthkmp.ui.home
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.automirrored.outlined.List
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
@@ -19,7 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
@@ -33,7 +25,13 @@ import androidx.navigation.navOptions
 import myhealthkmp.composeapp.generated.resources.Res
 import myhealthkmp.composeapp.generated.resources.dashboard_title
 import myhealthkmp.composeapp.generated.resources.diary_title
+import myhealthkmp.composeapp.generated.resources.ic_filled_home
+import myhealthkmp.composeapp.generated.resources.ic_filled_settings
+import myhealthkmp.composeapp.generated.resources.ic_list
+import myhealthkmp.composeapp.generated.resources.ic_outline_home
+import myhealthkmp.composeapp.generated.resources.ic_outline_settings
 import myhealthkmp.composeapp.generated.resources.settings_title
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
@@ -131,7 +129,7 @@ private fun RowScope.HomeBottomBarItem(
         icon = {
             when (destination) {
                 Dashboard -> Icon(getHomeIcon(selected), null)
-                Diary -> Icon(getDiaryIcon(selected), null)
+                Diary -> Icon(painterResource(Res.drawable.ic_list), null)
                 Settings -> Icon(getSettingsIcon(selected), null)
             }
         },
@@ -149,20 +147,18 @@ private fun RowScope.HomeBottomBarItem(
     )
 }
 
-private fun getHomeIcon(selected: Boolean): ImageVector =
+@Composable
+private fun getHomeIcon(selected: Boolean) = painterResource(
     if (selected)
-        Icons.Filled.Home
+        Res.drawable.ic_filled_home
     else
-        Icons.Outlined.Home
+        Res.drawable.ic_outline_home
+)
 
-private fun getDiaryIcon(selected: Boolean): ImageVector =
+@Composable
+private fun getSettingsIcon(selected: Boolean) = painterResource(
     if (selected)
-        Icons.AutoMirrored.Filled.List
+        Res.drawable.ic_filled_settings
     else
-        Icons.AutoMirrored.Outlined.List
-
-private fun getSettingsIcon(selected: Boolean): ImageVector =
-    if (selected)
-        Icons.Filled.Settings
-    else
-        Icons.Outlined.Settings
+        Res.drawable.ic_outline_settings
+)
