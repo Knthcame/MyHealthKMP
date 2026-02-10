@@ -11,7 +11,7 @@ import XCTest
 final class iosAppTestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
-        true
+        false
     }
 
     override func setUpWithError() throws {
@@ -23,12 +23,16 @@ final class iosAppTestsLaunchTests: XCTestCase {
         let app = XCUIApplication()
         app.launch()
 
-        // Insert steps here to perform after app launch but before taking a screenshot,
-        // such as logging into a test account or navigating somewhere in the app
-
+        app.activate()
+        assert(app.staticTexts["dashboardTopBarTitle"].firstMatch.exists)
         let attachment = XCTAttachment(screenshot: app.screenshot())
-        attachment.name = "Launch Screen"
+        attachment.name = "Dashboard Screen"
         attachment.lifetime = .keepAlways
         add(attachment)
+        
+        app.buttons["Diary"].firstMatch.tap()
+        assert(app.staticTexts.matching(identifier: "Diary").element(boundBy: 0).exists)
+        app.buttons["Settings"].firstMatch.tap()
+        assert(app.staticTexts.matching(identifier: "Settings").element(boundBy: 0).exists)
     }
 }
