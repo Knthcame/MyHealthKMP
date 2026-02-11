@@ -31,6 +31,7 @@ configure<ApplicationExtension> {
 
     defaultConfig {
         applicationId = "com.knthcame.myhealthkmp"
+        compileSdk = libs.versions.android.compileSdk.get().toInt()
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
