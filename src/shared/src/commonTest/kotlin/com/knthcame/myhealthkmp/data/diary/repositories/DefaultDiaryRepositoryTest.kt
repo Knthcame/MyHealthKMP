@@ -4,8 +4,6 @@ import app.cash.turbine.test
 import com.knthcame.myhealthkmp.data.diary.model.Activity
 import com.knthcame.myhealthkmp.data.diary.model.DiaryEvent
 import com.knthcame.myhealthkmp.data.diary.model.Sleep
-import com.knthcame.myhealthkmp.data.diary.repositories.DefaultDiaryRepository
-import com.knthcame.myhealthkmp.data.diary.repositories.DiaryRepository
 import com.knthcame.myhealthkmp.data.diary.sources.DiaryDao
 import dev.mokkery.answering.returns
 import dev.mokkery.every

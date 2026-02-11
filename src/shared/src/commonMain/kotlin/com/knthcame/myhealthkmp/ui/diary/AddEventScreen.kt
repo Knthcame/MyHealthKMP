@@ -63,8 +63,8 @@ import myhealthkmp.shared.generated.resources.add_event_sleep_text_field_title
 import myhealthkmp.shared.generated.resources.add_event_time_picker_title
 import myhealthkmp.shared.generated.resources.add_event_title
 import myhealthkmp.shared.generated.resources.add_event_type_picker_title
-import myhealthkmp.shared.generated.resources.ic_date_range
 import myhealthkmp.shared.generated.resources.ic_clock
+import myhealthkmp.shared.generated.resources.ic_date_range
 import myhealthkmp.shared.generated.resources.placeholder
 import myhealthkmp.shared.generated.resources.validation_error_invalid_number
 import org.jetbrains.compose.resources.painterResource
