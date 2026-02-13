@@ -62,7 +62,7 @@ jobs:
 
       - name: Get ktlint reports file paths
         id: ktlintPath
-        run: echo "ktlintReportPaths=$(find src/**/build/reports/ktlint/**/*.xml)" >> $GITHUB_OUTPUT
+        run: echo "ktlintReportPaths=$(find src/**/build/reports/ktlint/**/*.xml | tr "\n" ",")" >> $GITHUB_OUTPUT
 
       - name: SonarQube Cloud Scan
         if: always()
