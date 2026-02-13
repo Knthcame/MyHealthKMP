@@ -101,7 +101,7 @@ jobs:
 
       - name: Test Swift code
         if: always()
-        run: xcodebuild clean test
+        run: set -o pipefail && xcodebuild clean test
           -scheme iosApp
           -sdk iphonesimulator
           -destination "platform=iOS Simulator,name=iPhone 17"
@@ -110,6 +110,7 @@ jobs:
           -resultBundlePath iosApp/build/reports/iosApp.xcresult
           -enableCodeCoverage YES
           CODE_SIGNING_ALLOWED=NO | xcbeautify
+          --renderer github-actions
           --report junit
           --report-path iosApp/build/reports/
           --junit-report-filename TEST-XcodeTestResults.xml
