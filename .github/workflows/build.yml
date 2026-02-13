@@ -79,7 +79,7 @@ jobs:
 
   swiftTests:
     name: Run swift tests
-    runs-on: macos-latest
+    runs-on: macos-26
     permissions:
       checks: write
       pull-requests: write
@@ -104,6 +104,7 @@ jobs:
         run: set -o pipefail && xcodebuild clean test
           -scheme iosApp
           -sdk iphonesimulator
+          -destination "platform=iOS Simulator,name=iPhone 17"
           -configuration Release
           -project iosApp/iosApp.xcodeproj
           -resultBundlePath iosApp/build/reports/iosApp.xcresult
