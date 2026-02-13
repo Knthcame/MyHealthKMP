@@ -18,37 +18,44 @@ import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Instant
 
-class FakeDiaryDao(coroutineScope: CoroutineScope) : DiaryDao {
+class FakeDiaryDao(
+    coroutineScope: CoroutineScope,
+) : DiaryDao {
     private val now get() = Clock.System.now()
     private val cadence = 5.minutes
-    private val _heartRates: StateFlow<List<HeartRate>> = flow {
-        val heartRateMeasurements = initReadings().toMutableList()
+    private val _heartRates: StateFlow<List<HeartRate>> =
+        flow {
+            val heartRateMeasurements = initReadings().toMutableList()
 
-        while (true) {
-            val lastValue = heartRateMeasurements.last().bpm
-            heartRateMeasurements.add(generateNextValue(lastValue, now))
+            while (true) {
+                val lastValue = heartRateMeasurements.last().bpm
+                heartRateMeasurements.add(generateNextValue(lastValue, now))
 
-            emit(heartRateMeasurements.toList())
+                emit(heartRateMeasurements.toList())
 
-            delay(cadence)
-        }
-    }.stateIn(coroutineScope, SharingStarted.Lazily, emptyList())
+                delay(cadence)
+            }
+        }.stateIn(coroutineScope, SharingStarted.Lazily, emptyList())
 
     override val heartRates: Flow<List<HeartRate>> = _heartRates
 
-    private fun initReadings(): List<HeartRate> = buildList {
-        var timeStamp = now.minus(5.hours)
-        var bpm = 90.0
+    private fun initReadings(): List<HeartRate> =
+        buildList {
+            var timeStamp = now.minus(5.hours)
+            var bpm = 90.0
 
-        do {
-            val nextMeasurement = generateNextValue(bpm, timeStamp)
-            bpm = nextMeasurement.bpm
-            add(nextMeasurement)
-            timeStamp += cadence
-        } while (timeStamp < now)
-    }
+            do {
+                val nextMeasurement = generateNextValue(bpm, timeStamp)
+                bpm = nextMeasurement.bpm
+                add(nextMeasurement)
+                timeStamp += cadence
+            } while (timeStamp < now)
+        }
 
-    private fun generateNextValue(currentValue: Double, timeStamp: Instant): HeartRate {
+    private fun generateNextValue(
+        currentValue: Double,
+        timeStamp: Instant,
+    ): HeartRate {
         val minValue = 60.0
         val maxValue = 130.0
         val maxStep = 10.0

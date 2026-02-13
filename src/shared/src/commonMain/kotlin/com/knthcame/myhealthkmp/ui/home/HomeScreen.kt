@@ -43,13 +43,14 @@ fun HomeScreenRoute() {
         onTabItemClick = { route ->
             navController.navigate(
                 route = route,
-                navOptions = navOptions {
-                    popUpTo(navController.graph.startDestinationId) {
-                        saveState = true
-                    }
-                    launchSingleTop = true
-                    restoreState = true
-                }
+                navOptions =
+                    navOptions {
+                        popUpTo(navController.graph.startDestinationId) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+                    },
             )
         },
         navController = navController,
@@ -67,16 +68,18 @@ fun HomeScreen(
     val focusManager = LocalFocusManager.current
 
     Scaffold(
-        modifier = Modifier.clickable(
-            interactionSource = null,
-            indication = null,
-            onClick = { focusManager.clearFocus() }),
+        modifier =
+            Modifier.clickable(
+                interactionSource = null,
+                indication = null,
+                onClick = { focusManager.clearFocus() },
+            ),
         bottomBar = {
             HomeBottomBar(
                 onTabItemClick = onTabItemClick,
                 currentDestination = currentDestination,
             )
-        }
+        },
     ) { padding ->
         HomeNavHost(
             navController = navController,
@@ -85,9 +88,12 @@ fun HomeScreen(
     }
 }
 
-private val bottomBarDestinations: List<HomeDestination> = listOf(
-    Dashboard, Diary, Settings,
-)
+private val bottomBarDestinations: List<HomeDestination> =
+    listOf(
+        Dashboard,
+        Diary,
+        Settings,
+    )
 
 @Preview
 @Composable
@@ -103,14 +109,15 @@ fun HomeBottomBar(
     ) {
         bottomBarDestinations.forEach { destination ->
 
-            val selected = currentDestination?.hierarchy?.any { navDestination ->
-                navDestination.hasRoute(destination::class)
-            }
+            val selected =
+                currentDestination?.hierarchy?.any { navDestination ->
+                    navDestination.hasRoute(destination::class)
+                }
 
             HomeBottomBarItem(
                 destination = destination,
                 selected = selected ?: false,
-                onTabItemClick = onTabItemClick
+                onTabItemClick = onTabItemClick,
             )
         }
     }
@@ -134,11 +141,12 @@ private fun RowScope.HomeBottomBarItem(
             }
         },
         label = {
-            val text = when (destination) {
-                Dashboard -> stringResource(Res.string.dashboard_title)
-                Diary -> stringResource(Res.string.diary_title)
-                Settings -> stringResource(Res.string.settings_title)
-            }
+            val text =
+                when (destination) {
+                    Dashboard -> stringResource(Res.string.dashboard_title)
+                    Diary -> stringResource(Res.string.diary_title)
+                    Settings -> stringResource(Res.string.settings_title)
+                }
             Text(
                 text = text,
                 fontWeight = if (selected) FontWeight.Bold else FontWeight.Normal,
@@ -148,17 +156,21 @@ private fun RowScope.HomeBottomBarItem(
 }
 
 @Composable
-private fun getHomeIcon(selected: Boolean) = painterResource(
-    if (selected)
-        Res.drawable.ic_filled_home
-    else
-        Res.drawable.ic_outline_home
-)
+private fun getHomeIcon(selected: Boolean) =
+    painterResource(
+        if (selected) {
+            Res.drawable.ic_filled_home
+        } else {
+            Res.drawable.ic_outline_home
+        },
+    )
 
 @Composable
-private fun getSettingsIcon(selected: Boolean) = painterResource(
-    if (selected)
-        Res.drawable.ic_filled_settings
-    else
-        Res.drawable.ic_outline_settings
-)
+private fun getSettingsIcon(selected: Boolean) =
+    painterResource(
+        if (selected) {
+            Res.drawable.ic_filled_settings
+        } else {
+            Res.drawable.ic_outline_settings
+        },
+    )

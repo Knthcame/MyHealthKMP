@@ -4,13 +4,6 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 
-enum class DateTimeStyle {
-    Short,
-    Medium,
-    Long,
-    Full,
-}
-
 /**
  *  Formats the local date according to the current system's locale.
  *

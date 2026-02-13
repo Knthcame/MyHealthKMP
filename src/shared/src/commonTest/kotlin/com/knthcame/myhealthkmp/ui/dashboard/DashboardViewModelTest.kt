@@ -29,17 +29,19 @@ import kotlin.time.Duration.Companion.seconds
 class DashboardViewModelTest {
     private lateinit var viewModel: DashboardViewModel
 
-    private val dashboardRepository = mock<DashboardRepository> {
-        every { currentHeartRate } returns emptyFlow()
-        every { graphHeartRates } returns emptyFlow()
-    }
-    private val dateTimeRepository = mock<DateTimeRepository> {
-        every { now } returnsBy { Clock.System.now() }
-        every { localNow } returnsBy {
-            Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+    private val dashboardRepository =
+        mock<DashboardRepository> {
+            every { currentHeartRate } returns emptyFlow()
+            every { graphHeartRates } returns emptyFlow()
         }
-        every { systemTimeZone } returns TimeZone.currentSystemDefault()
-    }
+    private val dateTimeRepository =
+        mock<DateTimeRepository> {
+            every { now } returnsBy { Clock.System.now() }
+            every { localNow } returnsBy {
+                Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+            }
+            every { systemTimeZone } returns TimeZone.currentSystemDefault()
+        }
 
     @Test
     fun heartRateState_returnsMissing_asDefaultValue() {
@@ -51,107 +53,115 @@ class DashboardViewModelTest {
     }
 
     @Test
-    fun heartRateState_returnsMissing_whenCurrentHeartRateIsNull() = runTest {
-        every { dashboardRepository.currentHeartRate } returns flowOf(null)
-        every { dashboardRepository.graphHeartRates } returns flowOf(
-            listOf(
-                HeartRate(80.0, Clock.System.now())
-            )
-        )
+    fun heartRateState_returnsMissing_whenCurrentHeartRateIsNull() =
+        runTest {
+            every { dashboardRepository.currentHeartRate } returns flowOf(null)
+            every { dashboardRepository.graphHeartRates } returns
+                flowOf(
+                    listOf(
+                        HeartRate(80.0, Clock.System.now()),
+                    ),
+                )
 
-        initViewmodel()
+            initViewmodel()
 
-        viewModel.heartRateState.test {
-            val actual = awaitItem()
+            viewModel.heartRateState.test {
+                val actual = awaitItem()
 
-            assertEquals(HeartRateUiState.Missing, actual)
+                assertEquals(HeartRateUiState.Missing, actual)
+            }
         }
-    }
 
     @Test
-    fun heartRateState_returnsCurrentValue_whenCurrentHearRateAvailable() = runTest {
-        val expected = HeartRate(74.8, Clock.System.now())
-        every { dashboardRepository.currentHeartRate } returns flowOf(expected)
-        every { dashboardRepository.graphHeartRates } returns flowOf(listOf(expected))
-        initViewmodel()
+    fun heartRateState_returnsCurrentValue_whenCurrentHearRateAvailable() =
+        runTest {
+            val expected = HeartRate(74.8, Clock.System.now())
+            every { dashboardRepository.currentHeartRate } returns flowOf(expected)
+            every { dashboardRepository.graphHeartRates } returns flowOf(listOf(expected))
+            initViewmodel()
 
-        viewModel.heartRateState.test {
-            val actual = awaitItem()
+            viewModel.heartRateState.test {
+                val actual = awaitItem()
 
-            assertIs<HeartRateUiState.Available>(actual)
-            assertEquals(expected.bpm, actual.value)
+                assertIs<HeartRateUiState.Available>(actual)
+                assertEquals(expected.bpm, actual.value)
+            }
         }
-    }
 
     @Test
-    fun heartRateState_returnsFormattedTime_whenCurrentHeartRateIsFromToday() = runTest {
-        val expected = HeartRate(74.8, Clock.System.now())
-        every { dashboardRepository.currentHeartRate } returns flowOf(expected)
-        every { dashboardRepository.graphHeartRates } returns flowOf(listOf(expected))
-        initViewmodel()
+    fun heartRateState_returnsFormattedTime_whenCurrentHeartRateIsFromToday() =
+        runTest {
+            val expected = HeartRate(74.8, Clock.System.now())
+            every { dashboardRepository.currentHeartRate } returns flowOf(expected)
+            every { dashboardRepository.graphHeartRates } returns flowOf(listOf(expected))
+            initViewmodel()
 
-        val localExpectedTime =
-            expected.timeStamp.toLocalDateTime(TimeZone.currentSystemDefault()).time
-        viewModel.heartRateState.test {
-            val actual = awaitItem()
+            val localExpectedTime =
+                expected.timeStamp.toLocalDateTime(TimeZone.currentSystemDefault()).time
+            viewModel.heartRateState.test {
+                val actual = awaitItem()
 
-            assertIs<HeartRateUiState.Available>(actual)
-            assertEquals(localExpectedTime.formatWithCurrentLocale(), actual.timeStamp)
+                assertIs<HeartRateUiState.Available>(actual)
+                assertEquals(localExpectedTime.formatWithCurrentLocale(), actual.timeStamp)
+            }
         }
-    }
 
     @Test
-    fun heartRateState_returnsFormattedDateTime_whenCurrentHeartRateIsNotFromToday() = runTest {
-        val timeZone = TimeZone.currentSystemDefault()
-        val startOfDay = LocalDateTime(2024, 12, 11, 0, 0)
-        val utcDateTime = startOfDay.toInstant(timeZone)
-        every { dateTimeRepository.now } returns utcDateTime
-        every { dateTimeRepository.localNow } returns startOfDay
-        every { dateTimeRepository.systemTimeZone } returns timeZone
+    fun heartRateState_returnsFormattedDateTime_whenCurrentHeartRateIsNotFromToday() =
+        runTest {
+            val timeZone = TimeZone.currentSystemDefault()
+            val startOfDay = LocalDateTime(2024, 12, 11, 0, 0)
+            val utcDateTime = startOfDay.toInstant(timeZone)
+            every { dateTimeRepository.now } returns utcDateTime
+            every { dateTimeRepository.localNow } returns startOfDay
+            every { dateTimeRepository.systemTimeZone } returns timeZone
 
-        val expected = HeartRate(74.8, utcDateTime - 1.seconds)
-        every { dashboardRepository.currentHeartRate } returns flowOf(expected)
-        every { dashboardRepository.graphHeartRates } returns flowOf(listOf(expected))
+            val expected = HeartRate(74.8, utcDateTime - 1.seconds)
+            every { dashboardRepository.currentHeartRate } returns flowOf(expected)
+            every { dashboardRepository.graphHeartRates } returns flowOf(listOf(expected))
 
-        initViewmodel()
+            initViewmodel()
 
-        val localExpectedDateTime = expected.timeStamp.toLocalDateTime(timeZone)
-        viewModel.heartRateState.test {
-            val actual = awaitItem()
+            val localExpectedDateTime = expected.timeStamp.toLocalDateTime(timeZone)
+            viewModel.heartRateState.test {
+                val actual = awaitItem()
 
-            assertIs<HeartRateUiState.Available>(actual)
-            assertEquals(
-                localExpectedDateTime.formatWithCurrentLocale(DateTimeStyle.Short),
-                actual.timeStamp,
-            )
+                assertIs<HeartRateUiState.Available>(actual)
+                assertEquals(
+                    localExpectedDateTime.formatWithCurrentLocale(DateTimeStyle.Short),
+                    actual.timeStamp,
+                )
+            }
         }
-    }
 
     @Test
-    fun heartRateState_ordersGraphList_whenAvailable() = runTest {
-        val unorderedList = listOf(
-            HeartRate(80.2, Clock.System.now() - 4.hours),
-            HeartRate(94.1, Clock.System.now())
-        )
-        val orderedList = unorderedList.sortedBy { item -> item.timeStamp }
+    fun heartRateState_ordersGraphList_whenAvailable() =
+        runTest {
+            val unorderedList =
+                listOf(
+                    HeartRate(80.2, Clock.System.now() - 4.hours),
+                    HeartRate(94.1, Clock.System.now()),
+                )
+            val orderedList = unorderedList.sortedBy { item -> item.timeStamp }
 
-        every { dashboardRepository.currentHeartRate } returns flowOf(orderedList.last())
-        every { dashboardRepository.graphHeartRates } returns flowOf(unorderedList)
-        initViewmodel()
+            every { dashboardRepository.currentHeartRate } returns flowOf(orderedList.last())
+            every { dashboardRepository.graphHeartRates } returns flowOf(unorderedList)
+            initViewmodel()
 
-        viewModel.heartRateState.test {
-            val actual = awaitItem()
+            viewModel.heartRateState.test {
+                val actual = awaitItem()
 
-            assertIs<HeartRateUiState.Available>(actual)
-            assertContentEquals(orderedList, actual.graphValues)
+                assertIs<HeartRateUiState.Available>(actual)
+                assertContentEquals(orderedList, actual.graphValues)
+            }
         }
-    }
 
     private fun initViewmodel() {
-        viewModel = DashboardViewModel(
-            dashboardRepository = dashboardRepository,
-            dateTimeRepository = dateTimeRepository,
-            viewModelScope = testViewModelScope,
-        )
+        viewModel =
+            DashboardViewModel(
+                dashboardRepository = dashboardRepository,
+                dateTimeRepository = dateTimeRepository,
+                viewModelScope = testViewModelScope,
+            )
     }
 }

@@ -1,3 +1,5 @@
+import dev.detekt.gradle.Detekt
+import dev.detekt.gradle.DetektCreateBaselineTask
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -10,13 +12,20 @@ plugins {
     alias(libs.plugins.kover)
     alias(libs.plugins.skie)
     alias(libs.plugins.mokkery)
+    alias(libs.plugins.detekt)
 }
 
 kotlin {
     androidLibrary {
         namespace = "com.knthcame.myhealthkmp.shared"
-        compileSdk = libs.versions.android.compileSdk.get().toInt()
-        minSdk = libs.versions.android.minSdk.get().toInt()
+        compileSdk =
+            libs.versions.android.compileSdk
+                .get()
+                .toInt()
+        minSdk =
+            libs.versions.android.minSdk
+                .get()
+                .toInt()
 
         compilerOptions {
             jvmTarget = JvmTarget.JVM_11
@@ -32,7 +41,7 @@ kotlin {
     listOf(
         iosX64(),
         iosArm64(),
-        iosSimulatorArm64()
+        iosSimulatorArm64(),
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
@@ -64,6 +73,30 @@ kotlin {
         testImplementation(libs.kotlinx.coroutines.test)
         testImplementation(libs.turbine)
     }
+}
+
+detekt {
+    buildUponDefaultConfig = true // preconfigure defaults
+    allRules = false // activate all available (even unstable) rules.
+    source =
+        files(
+            "src/androidHostTest/kotlin",
+            "src/androidMain/kotlin",
+            "src/commonMain/kotlin",
+            "src/commonTest/kotlin",
+            "src/desktopMain/kotlin",
+            "src/desktopTest/kotlin",
+            "src/iosMain/kotlin",
+            "src/iosTest/kotlin",
+        )
+    config.setFrom("$projectDir/../config/detekt.yml") // point to your custom config defining rules to run, overwriting default behavior
+    // baseline = file("$projectDir/../config/baseline.xml")
+}
+tasks.withType<Detekt>().configureEach {
+    jvmTarget = JvmTarget.JVM_11.target
+}
+tasks.withType<DetektCreateBaselineTask>().configureEach {
+    jvmTarget = JvmTarget.JVM_11.target
 }
 
 dependencies {

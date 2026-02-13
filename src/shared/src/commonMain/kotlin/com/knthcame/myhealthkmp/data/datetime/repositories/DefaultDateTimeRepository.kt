@@ -6,7 +6,9 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Instant
 
-class DefaultDateTimeRepository(private val dateTimeDao: DateTimeDao) : DateTimeRepository {
+class DefaultDateTimeRepository(
+    private val dateTimeDao: DateTimeDao,
+) : DateTimeRepository {
     override val now: Instant
         get() = dateTimeDao.now
 

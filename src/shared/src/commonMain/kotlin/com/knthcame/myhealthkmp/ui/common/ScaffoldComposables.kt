@@ -32,11 +32,12 @@ fun DefaultScaffold(
     val focusManager = LocalFocusManager.current
 
     Scaffold(
-        modifier = modifier.clickable(
-            interactionSource = null,
-            indication = null,
-            onClick = { focusManager.clearFocus() }
-        ),
+        modifier =
+            modifier.clickable(
+                interactionSource = null,
+                indication = null,
+                onClick = { focusManager.clearFocus() },
+            ),
         topBar = {
             TopAppBar(
                 title = {

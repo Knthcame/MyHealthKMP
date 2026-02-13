@@ -100,7 +100,7 @@ private fun HeartRateCard(
     Card(modifier = modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             HeartRateCardHeader(
                 heartRateUiState = heartRateUiState,
@@ -118,7 +118,7 @@ private fun HeartRateCard(
                     visible = heartRateUiState is HeartRateUiState.Available,
                     enter = fadeIn(),
                     exit = fadeOut(),
-                    modifier = Modifier.weight(0.5f)
+                    modifier = Modifier.weight(0.5f),
                 ) {
                     HeartRateCardGraph(
                         modifier = Modifier.fillMaxSize(),
@@ -146,20 +146,22 @@ private fun HeartRateCardHeader(
         val pulseScale by pulseTransition.animateFloat(
             initialValue = 1f,
             targetValue = 0.8f,
-            animationSpec = infiniteRepeatable(
-                animation = tween(durationMillis = 1000, easing = FastOutLinearInEasing),
-                repeatMode = RepeatMode.Reverse,
-            )
+            animationSpec =
+                infiniteRepeatable(
+                    animation = tween(durationMillis = 1000, easing = FastOutLinearInEasing),
+                    repeatMode = RepeatMode.Reverse,
+                ),
         )
 
         Icon(
             painter = painterResource(Res.drawable.heart_rate),
             contentDescription = "Heart rate icon",
             tint = Color.Red,
-            modifier = Modifier.size(20.dp).graphicsLayer {
-                scaleX = pulseScale
-                scaleY = pulseScale
-            },
+            modifier =
+                Modifier.size(20.dp).graphicsLayer {
+                    scaleX = pulseScale
+                    scaleY = pulseScale
+                },
         )
         Text(
             text = stringResource(Res.string.dashboard_heart_rate_card_title),
@@ -187,34 +189,40 @@ private fun HeartRateCardValue(
     heartRateUiState: HeartRateUiState,
     crossFadeAnimationSpec: FiniteAnimationSpec<Float> = tween(),
 ) {
-    val bpmText: String = when (heartRateUiState) {
-        is HeartRateUiState.Available -> heartRateUiState.value.toString()
-        HeartRateUiState.Missing -> stringResource(Res.string.placeholder)
-    }
+    val bpmText: String =
+        when (heartRateUiState) {
+            is HeartRateUiState.Available -> heartRateUiState.value.toString()
+            HeartRateUiState.Missing -> stringResource(Res.string.placeholder)
+        }
     Crossfade(
         targetState = bpmText,
         animationSpec = crossFadeAnimationSpec,
         modifier = modifier,
     ) { targetState ->
-        Text(buildAnnotatedString {
-            withStyle(
-                SpanStyle(
-                    fontSize = 32.sp,
-                    fontWeight = FontWeight.ExtraBold,
-                )
-            ) {
-                append(targetState)
-            }
-            append(" ")
-            withStyle(SpanStyle(fontWeight = FontWeight.ExtraBold)) {
-                append(stringResource(Res.string.unit_beats_per_minute))
-            }
-        })
+        Text(
+            buildAnnotatedString {
+                withStyle(
+                    SpanStyle(
+                        fontSize = 32.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                    ),
+                ) {
+                    append(targetState)
+                }
+                append(" ")
+                withStyle(SpanStyle(fontWeight = FontWeight.ExtraBold)) {
+                    append(stringResource(Res.string.unit_beats_per_minute))
+                }
+            },
+        )
     }
 }
 
 @Composable
-fun HeartRateCardGraph(modifier: Modifier, values: List<HeartRate>) {
+fun HeartRateCardGraph(
+    modifier: Modifier,
+    values: List<HeartRate>,
+) {
     val minInstant = remember(values) { values.minOf { item -> item.timeStamp } }
     val maxInstant = remember(values) { values.maxOf { item -> item.timeStamp } }
     val maxValue = 130
@@ -251,10 +259,11 @@ fun HeartRateCardGraph(modifier: Modifier, values: List<HeartRate>) {
         drawPath(
             path = path,
             brush = SolidColor(Color.Red),
-            style = Stroke(
-                width = 2.dp.toPx(),
-                pathEffect = PathEffect.cornerPathEffect(10.dp.toPx())
-            ),
+            style =
+                Stroke(
+                    width = 2.dp.toPx(),
+                    pathEffect = PathEffect.cornerPathEffect(10.dp.toPx()),
+                ),
         )
     })
 }

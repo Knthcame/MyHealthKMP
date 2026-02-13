@@ -16,16 +16,18 @@ class DefaultDashboardRepository(
     dateTimeRepository: DateTimeRepository,
 ) : DashboardRepository {
     private val graphInterval = 3.hours
-    private val timeTicker = flow {
-        while (true) {
-            emit(Unit)
-            delay(1.minutes)
+    private val timeTicker =
+        flow {
+            while (true) {
+                emit(Unit)
+                delay(1.minutes)
+            }
         }
-    }
 
-    override val currentHeartRate: Flow<HeartRate?> = diaryDao.heartRates.map { heartRates ->
-        heartRates.maxByOrNull { rate -> rate.timeStamp }
-    }
+    override val currentHeartRate: Flow<HeartRate?> =
+        diaryDao.heartRates.map { heartRates ->
+            heartRates.maxByOrNull { rate -> rate.timeStamp }
+        }
 
     override val graphHeartRates: Flow<List<HeartRate>> =
         diaryDao.heartRates.combine(timeTicker) { heartRates, _ ->

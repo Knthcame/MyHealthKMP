@@ -1,3 +1,6 @@
+import org.jlleitschuh.gradle.ktlint.KtlintExtension
+import org.jlleitschuh.gradle.ktlint.reporter.ReporterType
+
 plugins {
     // this is necessary to avoid the plugins to be loaded multiple times
     // in each subproject's classloader
@@ -11,4 +14,16 @@ plugins {
     alias(libs.plugins.kover) apply false
     alias(libs.plugins.skie) apply false
     alias(libs.plugins.mokkery) apply false
+    alias(libs.plugins.detekt) apply false
+    alias(libs.plugins.ktlint) apply false
+}
+
+subprojects {
+    apply(plugin = "org.jlleitschuh.gradle.ktlint")
+    configure<KtlintExtension> {
+        debug.set(true)
+        reporters {
+            reporter(ReporterType.CHECKSTYLE)
+        }
+    }
 }

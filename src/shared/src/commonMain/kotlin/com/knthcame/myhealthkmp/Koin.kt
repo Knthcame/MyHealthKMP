@@ -25,21 +25,23 @@ import org.koin.dsl.module
  *
  * @param appModule additional module from the app project.
  */
-fun initKoin(appModule: () -> Module): KoinApplication = startKoin {
-    modules(appModule(), platformModule, sharedModule)
-}
+fun initKoin(appModule: () -> Module): KoinApplication =
+    startKoin {
+        modules(appModule(), platformModule, sharedModule)
+    }
 
-private val sharedModule = module {
-    singleOf(::DefaultDateTimeDao) { bind<DateTimeDao>() }
-    singleOf(::DefaultDateTimeRepository) { bind<DateTimeRepository>() }
+private val sharedModule =
+    module {
+        singleOf(::DefaultDateTimeDao) { bind<DateTimeDao>() }
+        singleOf(::DefaultDateTimeRepository) { bind<DateTimeRepository>() }
 
-    singleOf(::FakeDiaryDao) { bind<DiaryDao>() }
-    singleOf(::DefaultDashboardRepository) { bind<DashboardRepository>() }
+        singleOf(::FakeDiaryDao) { bind<DiaryDao>() }
+        singleOf(::DefaultDashboardRepository) { bind<DashboardRepository>() }
 
-    factory { CoroutineScope(Dispatchers.Main.immediate + SupervisorJob()) }
+        factory { CoroutineScope(Dispatchers.Main.immediate + SupervisorJob()) }
 
-    viewModelOf(::DashboardViewModel)
-}
+        viewModelOf(::DashboardViewModel)
+    }
 
 /** The module from the platform-specific parts of the shared project */
 expect val platformModule: Module

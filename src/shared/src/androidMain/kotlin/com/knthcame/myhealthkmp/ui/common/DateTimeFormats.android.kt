@@ -24,9 +24,10 @@ actual fun LocalTime.formatWithCurrentLocale(timeStyle: DateTimeStyle): String {
     return toJavaLocalTime().format(formatter)
 }
 
-private fun DateTimeStyle.toPlatform(): FormatStyle = when (this) {
-    DateTimeStyle.Short -> FormatStyle.SHORT
-    DateTimeStyle.Medium -> FormatStyle.MEDIUM
-    DateTimeStyle.Long -> FormatStyle.LONG
-    DateTimeStyle.Full -> FormatStyle.FULL
-}
+private fun DateTimeStyle.toPlatform(): FormatStyle =
+    when (this) {
+        DateTimeStyle.Short -> FormatStyle.SHORT
+        DateTimeStyle.Medium -> FormatStyle.MEDIUM
+        DateTimeStyle.Long -> FormatStyle.LONG
+        DateTimeStyle.Full -> FormatStyle.FULL
+    }
