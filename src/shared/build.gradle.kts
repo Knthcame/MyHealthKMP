@@ -1,3 +1,4 @@
+import dev.mokkery.MockMode
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -10,6 +11,8 @@ plugins {
     alias(libs.plugins.kover)
     alias(libs.plugins.skie)
     alias(libs.plugins.mokkery)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.androidx.room)
 }
 
 kotlin {
@@ -37,6 +40,8 @@ kotlin {
         iosTarget.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+            // Required when using NativeSQLiteDriver
+            linkerOpts.add("-lsqlite3")
         }
     }
 
@@ -53,12 +58,15 @@ kotlin {
         implementation(libs.androidx.lifecycle.viewmodel)
         implementation(libs.androidx.lifecycle.runtime.compose)
         implementation(libs.jetbrains.navigation.compose)
+        implementation(libs.kotlinx.coroutines)
         implementation(libs.kotlinx.datetime)
         implementation(libs.kotlinx.serialization.json)
         implementation(libs.koin.core)
         implementation(libs.koin.compose)
         implementation(libs.koin.compose.viewmodel)
         implementation(libs.koin.compose.viewmodel.navigation)
+        implementation(libs.androidx.room.runtime)
+        implementation(libs.androidx.sqlite.bundled)
 
         testImplementation(libs.kotlin.test)
         testImplementation(libs.kotlinx.coroutines.test)
@@ -68,4 +76,17 @@ kotlin {
 
 dependencies {
     androidRuntimeClasspath(libs.jetbrains.compose.ui.tooling)
+    add("kspAndroid", libs.androidx.room.compiler)
+    add("kspIosSimulatorArm64", libs.androidx.room.compiler)
+    add("kspIosX64", libs.androidx.room.compiler)
+    add("kspIosArm64", libs.androidx.room.compiler)
+    add("kspDesktop", libs.androidx.room.compiler)
+}
+
+room {
+    schemaDirectory("$projectDir/schemas")
+}
+
+mokkery {
+    defaultMockMode.set(MockMode.autoUnit)
 }

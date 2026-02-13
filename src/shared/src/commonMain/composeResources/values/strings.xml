@@ -5,4 +5,25 @@
     <string name="settings_title">Settings</string>
     <string name="dashboard_heart_rate_card_title">Heart rate</string>
     <string name="unit_beats_per_minute">bpm</string>
+    <string name="unit_hours">h</string>
+    <string name="unit_minutes">min</string>
+    <string name="diary_header">Your activities</string>
+    <string name="diary_empty_list_header">Empty list!</string>
+    <string name="diary_empty_list_message">You can manually add events via the plus icon in the bottom.</string>
+    <string name="diary_add_event_title">Add event</string>
+    <string name="diary_delete_event_title">Delete event?</string>
+    <string name="diary_delete_event_message">Are you sure you want to delete this %1$s event from %2$s at %3$s?</string>
+    <string name="diary_activity_event_name">Activity</string>
+    <string name="diary_sleep_event_name">Sleep</string>
+    <string name="add_event_title">Register event</string>
+    <string name="add_event_date_picker_title">Date</string>
+    <string name="add_event_time_picker_title">Time</string>
+    <string name="add_event_type_picker_title">Event type</string>
+    <string name="add_event_activity_text_field_title">Activity duration</string>
+    <string name="add_event_sleep_text_field_title">Sleep duration</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_save">Save</string>
+    <string name="action_ok">OK</string>
+    <string name="validation_error_invalid_number">The entered number is not valid</string>
 </resources>
