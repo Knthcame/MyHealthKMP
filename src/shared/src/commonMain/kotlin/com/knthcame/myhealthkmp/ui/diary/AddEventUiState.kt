@@ -5,7 +5,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 
-data class DiaryEventUiState(
+data class AddEventUiState(
     val entryDate: LocalDate,
     val entryTime: LocalTime,
     val entryType: DiaryEvent.Type,
@@ -15,7 +15,7 @@ data class DiaryEventUiState(
     val isSaved: Boolean,
 ) {
     companion object {
-        fun initial(localDateTime: LocalDateTime) = DiaryEventUiState(
+        fun initial(localDateTime: LocalDateTime) = AddEventUiState(
             entryDate = localDateTime.date,
             entryTime = localDateTime.time,
             entryType = DiaryEvent.Type.entries.first(),

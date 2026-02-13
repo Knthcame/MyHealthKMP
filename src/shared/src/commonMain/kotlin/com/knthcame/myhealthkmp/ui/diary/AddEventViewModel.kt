@@ -49,13 +49,13 @@ class AddEventViewModel(
     private val savedState = MutableStateFlow(false)
     private val ticker = timeTicker(1.minutes)
 
-    val uiState: StateFlow<DiaryEventUiState> = combine(
+    val uiState: StateFlow<AddEventUiState> = combine(
         userInputsState,
         savedState,
         ticker,
     ) { userInputs, isSaved, _ ->
         val currentLocalDateTime = dateTimeRepository.localNow
-        DiaryEventUiState(
+        AddEventUiState(
             entryDate = userInputs.entryDate,
             entryTime = userInputs.entryTime,
             entryType = userInputs.entryType,
@@ -67,7 +67,7 @@ class AddEventViewModel(
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Lazily,
-        initialValue = DiaryEventUiState.initial(dateTimeRepository.localNow),
+        initialValue = AddEventUiState.initial(dateTimeRepository.localNow),
     )
 
     fun editEventDate(utcMillisecondsSinceEpoch: Long) {
