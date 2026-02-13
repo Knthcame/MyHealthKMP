@@ -149,7 +149,6 @@ jobs:
         with:
           api-level: 34
           arch: x86_64
-          working-directory: ./src
           script: ./gradlew clean connectedAndroidTest
 
       - name: Publish Test Results
@@ -182,7 +181,6 @@ jobs:
         uses: android-actions/setup-android@v3
 
       - name: Assemble release build
-        working-directory: ./src
         run: ./gradlew assembleRelease
 
       - name: Get release file apk path
