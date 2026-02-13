@@ -97,7 +97,7 @@ jobs:
         run: set -eo pipefail && xcodebuild clean test
           -scheme iosApp
           -sdk iphonesimulator
-          -destination "platform=iOS Simulator,name=iPhone 17"
+          -destination "platform=iOS Simulator"
           -configuration Release
           -project iosApp/iosApp.xcodeproj
           -resultBundlePath iosApp/build/reports/iosApp.xcresult
