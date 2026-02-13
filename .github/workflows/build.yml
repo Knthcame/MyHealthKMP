@@ -37,6 +37,7 @@ jobs:
 
       # koverXmlReportRelease executes testReleaseUnitTest internally.
       - name: Lint & test Kotlin code
+        if: always()
         run: ./gradlew clean
           ktlintCheck
           detekt
