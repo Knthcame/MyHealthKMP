@@ -6,12 +6,6 @@
 version: 2
 updates:
   - package-ecosystem: "gradle"
-    directory: "/src/"
-    schedule:
-      interval: "weekly"
-
-  - package-ecosystem: "maven"
-    directory: "/src/"
     schedule:
       interval: "weekly"
 
@@ -21,6 +15,6 @@ updates:
       interval: "weekly"
 
   - package-ecosystem: "swift"
-    directory: "/src/iosApp/"
+    directory: "/iosApp/"
     schedule:
       interval: "weekly"

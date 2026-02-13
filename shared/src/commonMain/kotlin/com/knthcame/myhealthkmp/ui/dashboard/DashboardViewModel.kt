@@ -28,13 +28,13 @@ class DashboardViewModel(
             } else {
                 HeartRateUiState.Available(
                     value = current.bpm,
-                    timeStamp = Format(current.timeStamp),
+                    timeStamp = format(current.timeStamp),
                     graphValues = graph.sortedBy { item -> item.timeStamp },
                 )
             }
         }.stateIn(viewModelScope, SharingStarted.Lazily, HeartRateUiState.Missing)
 
-    private fun Format(timeStamp: Instant): String {
+    private fun format(timeStamp: Instant): String {
         val localTimeStamp = timeStamp.toLocalDateTime(dateTimeRepository.systemTimeZone)
         if (localTimeStamp.date == dateTimeRepository.localNow.date) {
             return localTimeStamp.time.formatWithCurrentLocale()

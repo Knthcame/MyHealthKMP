@@ -16,5 +16,5 @@ import ComposeApp
 
 private var _koin: Koin_coreKoin?
 var koin: Koin_coreKoin {
-    return _koin!
+    get { _koin! }
 }
