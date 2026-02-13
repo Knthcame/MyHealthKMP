@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
-import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Duration.Companion.minutes
@@ -43,7 +42,6 @@ class AddEventViewModel(
     private val dateTimeRepository: DateTimeRepository,
     private val viewModelScope: CoroutineScope,
 ) : ViewModel(viewModelScope) {
-    private val currentTimeZone = TimeZone.currentSystemDefault()
 
     private val userInputsState = MutableStateFlow(
         DiaryUserInputsState.default(dateTimeRepository.localNow)
@@ -75,7 +73,7 @@ class AddEventViewModel(
     fun editEventDate(utcMillisecondsSinceEpoch: Long) {
         val instant = Instant.fromEpochMilliseconds(utcMillisecondsSinceEpoch)
         userInputsState.update { state ->
-            state.copy(entryDate = instant.toLocalDateTime(currentTimeZone).date)
+            state.copy(entryDate = instant.toLocalDateTime(dateTimeRepository.systemTimeZone).date)
         }
     }
 
@@ -101,7 +99,7 @@ class AddEventViewModel(
         viewModelScope.launch {
             val timeStamp = LocalDateTime(
                 uiState.value.entryDate, uiState.value.entryTime
-            ).toInstant(currentTimeZone)
+            ).toInstant(dateTimeRepository.systemTimeZone)
 
             diaryRepository.save(
                 DiaryEvent(
