@@ -32,7 +32,6 @@ jobs:
 
       # koverXmlReportRelease executes testReleaseUnitTest internally.
       - name: Lint & test Kotlin code
-        working-directory: ./src
         run: ./gradlew clean
           ktlintCheck
           detekt
@@ -62,7 +61,7 @@ jobs:
 
       - name: Get ktlint reports file paths
         id: ktlintPath
-        run: echo "ktlintReportPaths=$(find src/**/build/reports/ktlint/**/*.xml | tr "\n" ",")" >> $GITHUB_OUTPUT
+        run: echo "ktlintReportPaths=$(find **/build/reports/ktlint/**/*.xml | tr "\n" ",")" >> $GITHUB_OUTPUT
 
       - name: SonarQube Cloud Scan
         if: always()
@@ -97,19 +96,19 @@ jobs:
           -sdk iphonesimulator
           -destination "platform=iOS Simulator,name=iPhone 17"
           -configuration Release
-          -project src/iosApp/iosApp.xcodeproj
-          -resultBundlePath src/iosApp/build/reports/iosApp.xcresult
+          -project iosApp/iosApp.xcodeproj
+          -resultBundlePath iosApp/build/reports/iosApp.xcresult
           -enableCodeCoverage YES
           CODE_SIGNING_ALLOWED=NO | xcbeautify
           --report junit
-          --report-path src/iosApp/build/reports/
+          --report-path iosApp/build/reports/
           --junit-report-filename TEST-XcodeTestResults.xml
 
 #      # Converts XCode's xcresult file to a code coverage format that sonarqube understands,
 #      # according to the official guide/example:
 #      # https://github.com/SonarSource/sonar-scanning-examples/tree/master/swift-coverage
 #      - name: 'Convert code coverage result format'
-#        run: bash src/iosApp/xccov-to-sonarqube-generic.sh src/iosApp/build/reports/iosApp.xcresult > src/iosApp/build/reports/Swift-Coverage.xml
+#        run: bash iosApp/xccov-to-sonarqube-generic.sh iosApp/build/reports/iosApp.xcresult > iosApp/build/reports/Swift-Coverage.xml
 #        if: always()
 
       - name: Publish Swift test results
@@ -124,7 +123,7 @@ jobs:
         if: always()
         with:
           name: swift-test-results
-          path: 'src/iosApp/build/reports/'
+          path: 'iosApp/build/reports/'
 
   testAndroidInstrumented:
     name: Run Android instrumented tests
@@ -188,7 +187,7 @@ jobs:
 
       - name: Get release file apk path
         id: releaseApk
-        run: echo "apkfile=$(find src/androidApp/build/outputs/apk/release/*.apk)" >> $GITHUB_OUTPUT
+        run: echo "apkfile=$(find androidApp/build/outputs/apk/release/*.apk)" >> $GITHUB_OUTPUT
 
       - name: Upload Release Build to Artifacts
         uses: actions/upload-artifact@v4
