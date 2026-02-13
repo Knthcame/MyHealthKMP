@@ -100,7 +100,7 @@ jobs:
 
       - name: Test Swift code
         if: always()
-        run: set -eo pipefail && xcodebuild clean test
+        run: xcodebuild clean test
           -scheme iosApp
           -sdk iphonesimulator
           -destination "platform=iOS Simulator,name=iPhone 17"
