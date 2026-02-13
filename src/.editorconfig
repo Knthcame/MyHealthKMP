@@ -6,13 +6,10 @@ ktlint_function_naming_ignore_when_annotated_with = Composable
 [**/build/**/*.kt]
 ktlint = disabled
 
+[**/generated/**/*]
+ktlint = disabled
+
 [**/*.gradle.kts]
-ktlint = disabled
-
-[**/src/commonTest/kotlin/**/*.kt]
-ktlint = disabled
-
-[**/src/test/kotlin/**/*.kt]
 ktlint = disabled
 
 [**/secrets/**/*.kt]
