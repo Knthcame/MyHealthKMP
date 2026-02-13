@@ -98,7 +98,7 @@ fun AddEventScreenRoute(
 @Composable
 fun AddEventScreen(
     onNavigationIconClick: () -> Unit,
-    uiState: DiaryEventUiState,
+    uiState: AddEventUiState,
     onDateSelected: (millisecondsSinceEpoch: Long) -> Unit,
     onTimeSelected: (hour: Int, minute: Int) -> Unit,
     onEditEntryType: (DiaryEvent.Type) -> Unit,
