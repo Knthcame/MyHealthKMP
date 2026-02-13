@@ -34,6 +34,8 @@ jobs:
       - name: Lint & test Kotlin code
         working-directory: ./src
         run: ./gradlew clean
+          ktlintCheck
+          detekt
           koverXmlReport
           iosSimulatorArm64Test
           desktopTest
