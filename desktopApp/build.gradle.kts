@@ -17,6 +17,7 @@ kotlin {
 
         testImplementation(libs.koin.test)
         testImplementation(libs.koin.test.junit4)
+        testImplementation(libs.jetbrains.compose.ui.test.junit4)
     }
 }
 

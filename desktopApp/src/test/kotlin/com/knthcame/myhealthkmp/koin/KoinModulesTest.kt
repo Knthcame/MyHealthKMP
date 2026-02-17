@@ -1,6 +1,7 @@
-package com.knthcame.myhealthkmp
+package com.knthcame.myhealthkmp.koin
 
-import com.knthcame.myhealthkmp.koin.appModule
+import com.knthcame.myhealthkmp.platformModule
+import com.knthcame.myhealthkmp.sharedModule
 import org.junit.Test
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.dsl.module
