@@ -13,6 +13,9 @@ kotlin {
         implementation(compose.desktop.currentOs)
         implementation(libs.kotlinx.coroutines.swing)
         implementation(libs.koin.core)
+
+        testImplementation(libs.koin.test)
+        testImplementation(libs.koin.test.junit4)
     }
 }
 

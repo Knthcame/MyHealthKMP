@@ -30,7 +30,7 @@ fun initKoin(appModule: () -> Module): KoinApplication =
         modules(appModule(), platformModule, sharedModule)
     }
 
-private val sharedModule =
+val sharedModule =
     module {
         singleOf(::DefaultDateTimeDao) { bind<DateTimeDao>() }
         singleOf(::DefaultDateTimeRepository) { bind<DateTimeRepository>() }
