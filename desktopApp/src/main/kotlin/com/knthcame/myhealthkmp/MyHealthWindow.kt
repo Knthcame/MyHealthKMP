@@ -6,7 +6,6 @@ import com.knthcame.myhealthkmp.ui.App
 
 @Composable
 fun MyHealthWindow(onCloseRequest: () -> Unit) {
-
     Window(
         onCloseRequest = onCloseRequest,
         title = "MyHealthKMP",

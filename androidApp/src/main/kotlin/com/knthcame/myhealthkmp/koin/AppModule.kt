@@ -1,4 +1,4 @@
-package com.knthcame.myhealthkmp
+package com.knthcame.myhealthkmp.koin
 
 import android.content.Context
 import org.koin.dsl.bind
