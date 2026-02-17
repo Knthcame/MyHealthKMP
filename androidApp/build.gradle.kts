@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.kover)
 }
 
 kotlin {
@@ -20,6 +21,11 @@ kotlin {
         implementation(libs.androidx.activity.compose)
         implementation(libs.koin.android)
         implementation(libs.koin.androidx.compose)
+
+        debugImplementation(libs.jetbrains.compose.ui.tooling)
+        debugImplementation(libs.androidx.ui.test.manifest)
+
+        androidTestImplementation(libs.androidx.ui.test.junit4.android)
     }
 }
 
@@ -65,10 +71,4 @@ configure<ApplicationExtension> {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-}
-
-dependencies {
-    debugImplementation(libs.jetbrains.compose.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-    androidTestImplementation(libs.androidx.ui.test.junit4.android)
 }

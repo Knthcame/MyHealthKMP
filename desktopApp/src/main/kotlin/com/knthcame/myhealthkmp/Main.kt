@@ -1,22 +1,11 @@
 package com.knthcame.myhealthkmp
 
-import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-import com.knthcame.myhealthkmp.ui.App
-import org.koin.dsl.module
+import com.knthcame.myhealthkmp.koin.appModule
 
 fun main() =
     application {
-        initKoin {
-            module {
-                // Nothing to be registered here.
-            }
-        }
+        initKoin { appModule }
 
-        Window(
-            onCloseRequest = ::exitApplication,
-            title = "MyHealthKMP",
-        ) {
-            App()
-        }
+        MyHealthWindow(onCloseRequest = ::exitApplication)
     }
