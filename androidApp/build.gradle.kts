@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
-    alias(libs.plugins.kover)
+    jacoco
 }
 
 kotlin {
@@ -24,6 +24,9 @@ kotlin {
 
         debugImplementation(libs.jetbrains.compose.ui.tooling)
         debugImplementation(libs.androidx.ui.test.manifest)
+
+        testImplementation(libs.kotlin.test)
+        testImplementation(libs.kotlin.test.junit)
 
         androidTestImplementation(libs.androidx.ui.test.junit4.android)
     }
@@ -58,7 +61,11 @@ configure<ApplicationExtension> {
         }
     }
     buildTypes {
-        getByName("release") {
+        debug {
+            enableAndroidTestCoverage = true
+            enableUnitTestCoverage = true
+        }
+        release {
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
