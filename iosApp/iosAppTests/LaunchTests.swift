@@ -1,5 +1,5 @@
 //
-//  iosAppTestsLaunchTests.swift
+//  LaunchTests.swift
 //  iosAppTests
 //
 //  Created by Kenneth Cartaña Mendoza on 28/11/24.
@@ -8,9 +8,8 @@
 
 import XCTest
 
-final class iosAppTestsLaunchTests: XCTestCase {
-
-    override class var runsForEachTargetApplicationUIConfiguration: Bool {
+final class LaunchTests: XCTestCase {
+    override static var runsForEachTargetApplicationUIConfiguration: Bool {
         false
     }
 
@@ -19,7 +18,7 @@ final class iosAppTestsLaunchTests: XCTestCase {
     }
 
     @MainActor
-    func testLaunch() throws {
+    func testLaunch() {
         let app = XCUIApplication()
         app.launch()
 
@@ -29,7 +28,7 @@ final class iosAppTestsLaunchTests: XCTestCase {
         attachment.name = "Dashboard Screen"
         attachment.lifetime = .keepAlways
         add(attachment)
-        
+
         app.buttons["Diary"].firstMatch.tap()
         assert(app.staticTexts.matching(identifier: "Diary").element(boundBy: 0).exists)
         app.buttons["Settings"].firstMatch.tap()
