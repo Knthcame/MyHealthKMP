@@ -1,5 +1,5 @@
 //
-//  LaunchTest.swift
+//  LaunchTests.swift
 //  iosAppTests
 //
 //  Created by Kenneth Cartaña Mendoza on 28/11/24.
@@ -8,7 +8,7 @@
 
 import XCTest
 
-final class iosAppTestsLaunchTests: XCTestCase {
+final class LaunchTests: XCTestCase {
     override static var runsForEachTargetApplicationUIConfiguration: Bool {
         false
     }
