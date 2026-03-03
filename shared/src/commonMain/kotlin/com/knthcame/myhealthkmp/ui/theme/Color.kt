@@ -2,24 +2,6 @@ package com.knthcame.myhealthkmp.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
-sealed class MyHealthColorPalette(
-    val activity: Color,
-    val sleep: Color,
-    val warning: Color,
-) {
-    data object Light : MyHealthColorPalette(
-        activity = Color(0xFFf0c808),
-        sleep = Color(0xFF09769A),
-        warning = Color(0xFFff9200),
-    )
-
-    data object Dark : MyHealthColorPalette(
-        activity = Color(0xFFdab707),
-        sleep = Color(0xFF06aed5),
-        warning = Color(0xFFc44f00),
-    )
-}
-
 val primaryLight = Color(0xFF4C662B)
 val onPrimaryLight = Color(0xFFFFFFFF)
 val primaryContainerLight = Color(0xFFCDEDA3)
@@ -91,3 +73,11 @@ val surfaceContainerLowDark = Color(0xFF1A1C16)
 val surfaceContainerDark = Color(0xFF1E201A)
 val surfaceContainerHighDark = Color(0xFF282B24)
 val surfaceContainerHighestDark = Color(0xFF33362E)
+
+val activityLight = Color(0xFFf0c808)
+val sleepLight = Color(0xFF09769A)
+val warningLight = Color(0xFFff9200)
+
+val activityDark = Color(0xFFdab707)
+val sleepDark = Color(0xFF06aed5)
+val warningDark = Color(0xFFc44f00)

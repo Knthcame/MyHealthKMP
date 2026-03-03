@@ -246,7 +246,12 @@ private fun DateHeader(
                     Icon(
                         painter =
                             painterResource(
-                                resource = if (expanded) Res.drawable.ic_keyboard_arrow_up else Res.drawable.ic_keyboard_arrow_down,
+                                resource =
+                                    if (expanded) {
+                                        Res.drawable.ic_keyboard_arrow_up
+                                    } else {
+                                        Res.drawable.ic_keyboard_arrow_down
+                                    },
                             ),
                         contentDescription = null,
                         tint = color,
@@ -295,6 +300,7 @@ private fun DiaryEventItem(
         DeleteEventConfirmationDialog(
             event = event,
             onDismissRequest = {
+                @Suppress("AssignedValueIsNeverRead")
                 deleteEventConfirmationDialogIsVisible = false
                 scope.launch { dismissState.reset() }
             },
