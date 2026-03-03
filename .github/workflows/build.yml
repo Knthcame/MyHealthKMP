@@ -29,8 +29,15 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@f29f5a9d7b09a7c6b29859002d29d24e1674c884
 
-      # koverXmlReportRelease executes testReleaseUnitTest internally.
+      - name: Install SwiftLint
+        run: brew install swiftlint
+
+      - name: Run SwiftLint
+        run: swiftlint lint iosApp --reporter json -> swiftlint.json
+
+      # koverXmlReport executes unit tests internally.
       - name: Lint & test Kotlin code
+        if: always()
         run: ./gradlew clean
           ktlintCheck
           detekt
@@ -73,6 +80,8 @@ jobs:
   swiftTests:
     name: Run swift tests
     runs-on: macos-latest
+    env:
+      simulatorName: iPhone 17
     permissions:
       checks: write
       pull-requests: write
@@ -92,17 +101,21 @@ jobs:
       - name: Select Xcode 26.2
         run: sudo xcode-select -s /Applications/Xcode_26.2.app
 
+      - name: Pre-boot iOS Simulator
+        run: xcrun simctl boot "$simulatorName" || true
+
       - name: Test Swift code
         if: always()
-        run: set -eo pipefail && xcodebuild clean test
+        run: set -o pipefail && xcodebuild clean test
           -scheme iosApp
           -sdk iphonesimulator
-          -destination "platform=iOS Simulator,name=iPhone 17"
+          -destination "platform=iOS Simulator,name=$simulatorName"
           -configuration Release
           -project iosApp/iosApp.xcodeproj
           -resultBundlePath iosApp/build/reports/iosApp.xcresult
           -enableCodeCoverage YES
           CODE_SIGNING_ALLOWED=NO | xcbeautify
+          --renderer github-actions
           --report junit
           --report-path iosApp/build/reports/
           --junit-report-filename TEST-XcodeTestResults.xml
