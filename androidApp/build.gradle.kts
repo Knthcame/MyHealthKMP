@@ -21,6 +21,8 @@ kotlin {
         implementation(libs.androidx.activity.compose)
         implementation(libs.koin.android)
         implementation(libs.koin.androidx.compose)
+        implementation(libs.androidx.room.runtime)
+        implementation(libs.androidx.sqlite.bundled)
 
         debugImplementation(libs.jetbrains.compose.ui.tooling)
         debugImplementation(libs.androidx.ui.test.manifest)
