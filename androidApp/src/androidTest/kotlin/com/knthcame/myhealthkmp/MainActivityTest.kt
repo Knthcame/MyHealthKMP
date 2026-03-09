@@ -13,7 +13,6 @@ import org.junit.Rule
 import org.junit.Test
 
 class MainActivityTest {
-
     @get:Rule
     val composeActivityScenario = createAndroidComposeRule<MainActivity>()
 
@@ -27,7 +26,8 @@ class MainActivityTest {
     fun homeScreen_displaysDiary_onBottomNavTabClick() {
         composeActivityScenario.onNodeWithTag(Diary.toString()).performClick()
         composeActivityScenario.onNodeWithTag(Diary.toString()).assertIsSelected()
-        composeActivityScenario.onNodeWithTag("topBarTitle", useUnmergedTree = true)
+        composeActivityScenario
+            .onNodeWithTag("topBarTitle", useUnmergedTree = true)
             .assertTextEquals("Diary")
     }
 
@@ -35,7 +35,8 @@ class MainActivityTest {
     fun homeScreen_displaysSettings_onBottomNavTabClick() {
         composeActivityScenario.onNodeWithTag(Settings.toString()).performClick()
         composeActivityScenario.onNodeWithTag(Settings.toString()).assertIsSelected()
-        composeActivityScenario.onNodeWithTag("topBarTitle", useUnmergedTree = true)
+        composeActivityScenario
+            .onNodeWithTag("topBarTitle", useUnmergedTree = true)
             .assertTextEquals("Settings")
     }
 }
