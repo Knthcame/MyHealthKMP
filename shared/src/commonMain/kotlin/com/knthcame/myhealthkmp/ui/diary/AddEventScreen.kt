@@ -111,7 +111,10 @@ fun AddEventScreen(
         onNavigationIconClick = onNavigationIconClick,
     ) { padding ->
         Column(
-            modifier = Modifier.fillMaxSize().padding(padding).padding(16.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             EventDatePicker(
@@ -174,7 +177,8 @@ private fun EventDatePicker(
             modifier = Modifier
                 .onFocusChanged { focusState ->
                     showDatePicker = focusState.isFocused
-                }.fillMaxWidth(),
+                }
+                .fillMaxWidth(),
         )
     }
 
@@ -238,10 +242,11 @@ private fun EventTimePicker(time: LocalTime, onValueSelected: (hour: Int, minute
                 Icon(painterResource(Res.drawable.ic_clock), null)
             },
             readOnly = true,
-            modifier =
-            Modifier.fillMaxWidth().onFocusChanged { focusState ->
-                showTimePicker = focusState.isFocused
-            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .onFocusChanged { focusState ->
+                    showTimePicker = focusState.isFocused
+                },
         )
     }
 
@@ -331,13 +336,13 @@ private fun EventTypeItem(
             )
 
             val textColor by animateColorAsState(
-                if (isSelected) {
+                targetValue = if (isSelected) {
                     resolveMonoChromeFromLuminance(backgroundColor)
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
                 },
             )
-            Text(item.eventName, color = textColor)
+            Text(text = item.eventName, color = textColor)
         }
     }
 }
@@ -349,39 +354,34 @@ private fun EventValueTextField(
     isError: Boolean,
     errorMessage: String?,
     onValueChange: (String) -> Unit,
-) {
-    Column {
-        val titleResource =
-            when (entryType) {
-                DiaryEvent.Type.Activity -> Res.string.add_event_activity_text_field_title
-                DiaryEvent.Type.Sleep -> Res.string.add_event_sleep_text_field_title
-            }
-
-        Text(stringResource(titleResource))
-
-        TextField(
-            value = value,
-            onValueChange = onValueChange,
-            isError = isError,
-            supportingText =
-            errorMessage?.let {
-                { Text(errorMessage) }
-            },
-            placeholder = {
-                Text(stringResource(Res.string.placeholder))
-            },
-            keyboardOptions =
-            KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Decimal,
-                imeAction = ImeAction.Done,
-            ),
-            singleLine = true,
-            trailingIcon = {
-                Text(entryType.unit)
-            },
-            modifier = Modifier.fillMaxWidth(),
-        )
+) = Column {
+    val titleResource = when (entryType) {
+        DiaryEvent.Type.Activity -> Res.string.add_event_activity_text_field_title
+        DiaryEvent.Type.Sleep -> Res.string.add_event_sleep_text_field_title
     }
+
+    Text(stringResource(titleResource))
+
+    TextField(
+        value = value,
+        onValueChange = onValueChange,
+        isError = isError,
+        supportingText = errorMessage?.let {
+            { Text(errorMessage) }
+        },
+        placeholder = {
+            Text(stringResource(Res.string.placeholder))
+        },
+        keyboardOptions = KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Decimal,
+            imeAction = ImeAction.Done,
+        ),
+        singleLine = true,
+        trailingIcon = {
+            Text(entryType.unit)
+        },
+        modifier = Modifier.fillMaxWidth(),
+    )
 }
 
 @Composable
@@ -389,18 +389,16 @@ private fun SaveEventButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+) = Button(
+    onClick = onClick,
+    modifier = modifier,
+    enabled = enabled,
 ) {
-    Button(
-        onClick = onClick,
-        modifier = modifier,
-        enabled = enabled,
-    ) {
-        Text(
-            text = stringResource(Res.string.action_save),
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-        )
-    }
+    Text(
+        text = stringResource(Res.string.action_save),
+        modifier = Modifier.fillMaxWidth(),
+        textAlign = TextAlign.Center,
+    )
 }
 
 private class AddEventSelectableDates(private val maxSelectableDate: LocalDate) : SelectableDates {
