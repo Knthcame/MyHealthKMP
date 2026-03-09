@@ -49,6 +49,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.knthcame.myhealthkmp.data.diary.model.HeartRate
+import kotlin.time.Instant
 import myhealthkmp.shared.generated.resources.Res
 import myhealthkmp.shared.generated.resources.dashboard_heart_rate_card_title
 import myhealthkmp.shared.generated.resources.dashboard_title
@@ -58,7 +59,6 @@ import myhealthkmp.shared.generated.resources.unit_beats_per_minute
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
-import kotlin.time.Instant
 
 @Composable
 fun DashboardScreenRoute(viewModel: DashboardViewModel = koinViewModel()) {
@@ -91,10 +91,7 @@ fun DashboardScreen(heartRateUiState: HeartRateUiState) {
 }
 
 @Composable
-private fun HeartRateCard(
-    modifier: Modifier = Modifier,
-    heartRateUiState: HeartRateUiState,
-) {
+private fun HeartRateCard(modifier: Modifier = Modifier, heartRateUiState: HeartRateUiState) {
     val crossFadeAnimationDuration = 600
 
     Card(modifier = modifier.fillMaxWidth()) {
@@ -146,19 +143,19 @@ private fun HeartRateCardHeader(
         val pulseScale by pulseTransition.animateFloat(
             initialValue = 1f,
             targetValue = 0.8f,
-            animationSpec =
-                infiniteRepeatable(
-                    animation = tween(durationMillis = 1000, easing = FastOutLinearInEasing),
-                    repeatMode = RepeatMode.Reverse,
-                ),
+            animationSpec = infiniteRepeatable(
+                animation = tween(durationMillis = 1000, easing = FastOutLinearInEasing),
+                repeatMode = RepeatMode.Reverse,
+            ),
         )
 
         Icon(
             painter = painterResource(Res.drawable.heart_rate),
             contentDescription = "Heart rate icon",
             tint = Color.Red,
-            modifier =
-                Modifier.size(20.dp).graphicsLayer {
+            modifier = Modifier
+                .size(20.dp)
+                .graphicsLayer {
                     scaleX = pulseScale
                     scaleY = pulseScale
                 },
@@ -219,51 +216,51 @@ private fun HeartRateCardValue(
 }
 
 @Composable
-fun HeartRateCardGraph(
-    modifier: Modifier,
-    values: List<HeartRate>,
-) {
+fun HeartRateCardGraph(modifier: Modifier, values: List<HeartRate>) {
     val minInstant = remember(values) { values.minOf { item -> item.timeStamp } }
     val maxInstant = remember(values) { values.maxOf { item -> item.timeStamp } }
     val maxValue = 130
     val minValue = 60
 
-    Canvas(modifier = modifier, onDraw = {
-        /** Calculates the horizontal offset from the start. */
-        fun calculateX(timeStamp: Instant): Float {
-            val totalWidth = (maxInstant - minInstant).inWholeMicroseconds
-            val localWidth = (timeStamp - minInstant).inWholeMicroseconds
-            val percentage = localWidth.toFloat() / totalWidth
+    Canvas(
+        modifier = modifier,
+        onDraw = {
+            /** Calculates the horizontal offset from the start. */
+            fun calculateX(timeStamp: Instant): Float {
+                val totalWidth = (maxInstant - minInstant).inWholeMicroseconds
+                val localWidth = (timeStamp - minInstant).inWholeMicroseconds
+                val percentage = localWidth.toFloat() / totalWidth
 
-            return size.width * percentage
-        }
+                return size.width * percentage
+            }
 
-        /** Calculates the vertical offset from the top. */
-        fun calculateY(bpm: Double): Float {
-            val totalHeight = maxValue - minValue
-            val localHeight = maxValue - bpm
-            val percentage = localHeight.toFloat() / totalHeight
+            /** Calculates the vertical offset from the top. */
+            fun calculateY(bpm: Double): Float {
+                val totalHeight = maxValue - minValue
+                val localHeight = maxValue - bpm
+                val percentage = localHeight.toFloat() / totalHeight
 
-            return size.height * percentage
-        }
+                return size.height * percentage
+            }
 
-        val path = Path()
-        val firstValue = values[0]
-        path.moveTo(x = calculateX(firstValue.timeStamp), y = calculateY(firstValue.bpm))
+            val path = Path()
+            val firstValue = values[0]
+            path.moveTo(x = calculateX(firstValue.timeStamp), y = calculateY(firstValue.bpm))
 
-        for (i in 1..values.lastIndex) {
-            val value = values[i]
-            path.lineTo(x = calculateX(value.timeStamp), y = calculateY(value.bpm))
-        }
+            for (i in 1..values.lastIndex) {
+                val value = values[i]
+                path.lineTo(x = calculateX(value.timeStamp), y = calculateY(value.bpm))
+            }
 
-        drawPath(
-            path = path,
-            brush = SolidColor(Color.Red),
-            style =
+            drawPath(
+                path = path,
+                brush = SolidColor(Color.Red),
+                style =
                 Stroke(
                     width = 2.dp.toPx(),
                     pathEffect = PathEffect.cornerPathEffect(10.dp.toPx()),
                 ),
-        )
-    })
+            )
+        },
+    )
 }

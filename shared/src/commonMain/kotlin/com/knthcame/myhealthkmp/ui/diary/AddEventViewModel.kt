@@ -5,6 +5,8 @@ import com.knthcame.myhealthkmp.data.common.timeTicker
 import com.knthcame.myhealthkmp.data.datetime.repositories.DateTimeRepository
 import com.knthcame.myhealthkmp.data.diary.model.DiaryEvent
 import com.knthcame.myhealthkmp.data.diary.repositories.DiaryRepository
+import kotlin.time.Duration.Companion.minutes
+import kotlin.time.Instant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,23 +20,15 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
-import kotlin.time.Duration.Companion.minutes
-import kotlin.time.Instant
 
-private data class DiaryUserInputsState(
-    val entryDate: LocalDate,
-    val entryTime: LocalTime,
-    val entryType: DiaryEvent.Type,
-    val value: String,
-) {
+private data class DiaryUserInputsState(val entryDate: LocalDate, val entryTime: LocalTime, val entryType: DiaryEvent.Type, val value: String) {
     companion object {
-        fun default(localDateTime: LocalDateTime) =
-            DiaryUserInputsState(
-                entryDate = localDateTime.date,
-                entryTime = localDateTime.time,
-                entryType = DiaryEvent.Type.entries.first(),
-                value = "",
-            )
+        fun default(localDateTime: LocalDateTime) = DiaryUserInputsState(
+            entryDate = localDateTime.date,
+            entryTime = localDateTime.time,
+            entryType = DiaryEvent.Type.entries.first(),
+            value = "",
+        )
     }
 }
 
@@ -79,10 +73,7 @@ class AddEventViewModel(
         }
     }
 
-    fun editEventTime(
-        hour: Int,
-        minute: Int,
-    ) {
+    fun editEventTime(hour: Int, minute: Int) {
         userInputsState.update { state ->
             state.copy(entryTime = LocalTime(hour, minute))
         }

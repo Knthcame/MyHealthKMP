@@ -4,15 +4,13 @@ import com.knthcame.myhealthkmp.data.diary.model.Activity
 import com.knthcame.myhealthkmp.data.diary.model.DiaryEvent
 import com.knthcame.myhealthkmp.data.diary.model.Sleep
 import com.knthcame.myhealthkmp.data.diary.sources.DiaryDao
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlin.time.Duration.Companion.hours
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.DurationUnit
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 
-class DefaultDiaryRepository(
-    private val diaryDao: DiaryDao,
-) : DiaryRepository {
+class DefaultDiaryRepository(private val diaryDao: DiaryDao) : DiaryRepository {
     override val diaryEvents: Flow<List<DiaryEvent>> =
         combine(diaryDao.sleeps, diaryDao.activities) { sleeps, activities ->
             val sleepEvents =
@@ -34,13 +32,12 @@ class DefaultDiaryRepository(
                     )
                 }
 
-            return@combine (sleepEvents + activityEvents).sortedByDescending { event -> event.timeStamp }
+            return@combine (sleepEvents + activityEvents).sortedByDescending { event ->
+                event.timeStamp
+            }
         }
 
-    override suspend fun delete(
-        type: DiaryEvent.Type,
-        id: Int,
-    ) {
+    override suspend fun delete(type: DiaryEvent.Type, id: Int) {
         when (type) {
             DiaryEvent.Type.Activity -> diaryDao.deleteActivity(id)
             DiaryEvent.Type.Sleep -> diaryDao.deleteSleep(id)

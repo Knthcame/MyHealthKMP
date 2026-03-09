@@ -43,14 +43,13 @@ fun HomeScreenRoute() {
         onTabItemClick = { route ->
             navController.navigate(
                 route = route,
-                navOptions =
-                    navOptions {
-                        popUpTo(navController.graph.startDestinationId) {
-                            saveState = true
-                        }
-                        launchSingleTop = true
-                        restoreState = true
-                    },
+                navOptions = navOptions {
+                    popUpTo(navController.graph.startDestinationId) {
+                        saveState = true
+                    }
+                    launchSingleTop = true
+                    restoreState = true
+                },
             )
         },
         navController = navController,
@@ -58,10 +57,7 @@ fun HomeScreenRoute() {
 }
 
 @Composable
-fun HomeScreen(
-    onTabItemClick: (tab: HomeDestination) -> Unit,
-    navController: NavHostController,
-) {
+fun HomeScreen(onTabItemClick: (tab: HomeDestination) -> Unit, navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
 
@@ -69,11 +65,11 @@ fun HomeScreen(
 
     Scaffold(
         modifier =
-            Modifier.clickable(
-                interactionSource = null,
-                indication = null,
-                onClick = { focusManager.clearFocus() },
-            ),
+        Modifier.clickable(
+            interactionSource = null,
+            indication = null,
+            onClick = { focusManager.clearFocus() },
+        ),
         bottomBar = {
             HomeBottomBar(
                 onTabItemClick = onTabItemClick,
@@ -97,11 +93,7 @@ private val bottomBarDestinations: List<HomeDestination> =
 
 @Preview
 @Composable
-fun HomeBottomBar(
-    onTabItemClick: (destination: HomeDestination) -> Unit,
-    currentDestination: NavDestination?,
-    modifier: Modifier = Modifier,
-) {
+fun HomeBottomBar(onTabItemClick: (destination: HomeDestination) -> Unit, currentDestination: NavDestination?, modifier: Modifier = Modifier) {
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
         contentColor = MaterialTheme.colorScheme.primary,
@@ -124,11 +116,7 @@ fun HomeBottomBar(
 }
 
 @Composable
-private fun RowScope.HomeBottomBarItem(
-    destination: HomeDestination,
-    selected: Boolean,
-    onTabItemClick: (destination: HomeDestination) -> Unit,
-) {
+private fun RowScope.HomeBottomBarItem(destination: HomeDestination, selected: Boolean, onTabItemClick: (destination: HomeDestination) -> Unit) {
     NavigationBarItem(
         modifier = Modifier.testTag(destination.toString()),
         selected = selected,
@@ -156,21 +144,19 @@ private fun RowScope.HomeBottomBarItem(
 }
 
 @Composable
-private fun getHomeIcon(selected: Boolean) =
-    painterResource(
-        if (selected) {
-            Res.drawable.ic_filled_home
-        } else {
-            Res.drawable.ic_outline_home
-        },
-    )
+private fun getHomeIcon(selected: Boolean) = painterResource(
+    if (selected) {
+        Res.drawable.ic_filled_home
+    } else {
+        Res.drawable.ic_outline_home
+    },
+)
 
 @Composable
-private fun getSettingsIcon(selected: Boolean) =
-    painterResource(
-        if (selected) {
-            Res.drawable.ic_filled_settings
-        } else {
-            Res.drawable.ic_outline_settings
-        },
-    )
+private fun getSettingsIcon(selected: Boolean) = painterResource(
+    if (selected) {
+        Res.drawable.ic_filled_settings
+    } else {
+        Res.drawable.ic_outline_settings
+    },
+)

@@ -1,13 +1,13 @@
 package com.knthcame.myhealthkmp.ui.common
 
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.LocalTime
 import kotlinx.datetime.toJavaLocalDate
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toJavaLocalTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 actual fun LocalDateTime.formatWithCurrentLocale(dateTimeStyle: DateTimeStyle): String {
     val formatter = DateTimeFormatter.ofLocalizedDateTime(dateTimeStyle.toPlatform())
@@ -24,10 +24,9 @@ actual fun LocalTime.formatWithCurrentLocale(timeStyle: DateTimeStyle): String {
     return toJavaLocalTime().format(formatter)
 }
 
-private fun DateTimeStyle.toPlatform(): FormatStyle =
-    when (this) {
-        DateTimeStyle.Short -> FormatStyle.SHORT
-        DateTimeStyle.Medium -> FormatStyle.MEDIUM
-        DateTimeStyle.Long -> FormatStyle.LONG
-        DateTimeStyle.Full -> FormatStyle.FULL
-    }
+private fun DateTimeStyle.toPlatform(): FormatStyle = when (this) {
+    DateTimeStyle.Short -> FormatStyle.SHORT
+    DateTimeStyle.Medium -> FormatStyle.MEDIUM
+    DateTimeStyle.Long -> FormatStyle.LONG
+    DateTimeStyle.Full -> FormatStyle.FULL
+}

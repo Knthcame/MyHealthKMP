@@ -6,8 +6,4 @@ import kotlin.time.Duration
 import kotlin.time.Instant
 
 @Entity("SleepTable")
-data class Sleep(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val duration: Duration,
-    val timeStamp: Instant,
-)
+data class Sleep(@PrimaryKey(autoGenerate = true) val id: Int = 0, val duration: Duration, val timeStamp: Instant)

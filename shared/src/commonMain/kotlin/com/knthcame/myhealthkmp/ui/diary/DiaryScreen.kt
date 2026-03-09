@@ -75,11 +75,7 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun DiaryScreenRoute(
-    onNavigationIconClick: () -> Unit,
-    onFABClicked: () -> Unit,
-    viewModel: DiaryViewModel = koinViewModel(),
-) {
+fun DiaryScreenRoute(onNavigationIconClick: () -> Unit, onFABClicked: () -> Unit, viewModel: DiaryViewModel = koinViewModel()) {
     val events by viewModel.groupedDiaryEvents.collectAsState()
 
     DiaryScreen(
@@ -127,11 +123,7 @@ fun DiaryScreen(
 }
 
 @Composable
-private fun AddEventButton(
-    modifier: Modifier = Modifier,
-    expanded: Boolean,
-    onClick: () -> Unit,
-) {
+private fun AddEventButton(modifier: Modifier = Modifier, expanded: Boolean, onClick: () -> Unit) {
     ExtendedFloatingActionButton(
         text = {
             Text(stringResource(Res.string.diary_add_event_title))
@@ -161,7 +153,9 @@ private fun ColumnScope.DiaryEventsList(
 
     val expandedStateSaver = mutableStateMapSaver<LocalDate, Boolean>()
 
-    val expandedState: MutableMap<LocalDate, Boolean> by rememberSaveable(stateSaver = expandedStateSaver) {
+    val expandedState: MutableMap<LocalDate, Boolean> by rememberSaveable(
+        stateSaver = expandedStateSaver,
+    ) {
         mutableStateOf(mutableStateMapOf())
     }
 
@@ -180,9 +174,9 @@ private fun ColumnScope.DiaryEventsList(
                         expandedState[localDate] = !expanded
                     },
                     modifier =
-                        Modifier
-                            .background(MaterialTheme.colorScheme.background)
-                            .padding(vertical = 4.dp),
+                    Modifier
+                        .background(MaterialTheme.colorScheme.background)
+                        .padding(vertical = 4.dp),
                 )
             }
 
@@ -225,12 +219,7 @@ private fun EmptyDiaryView() {
 }
 
 @Composable
-private fun DateHeader(
-    localDate: LocalDate,
-    expanded: Boolean,
-    onExpansionIconClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun DateHeader(localDate: LocalDate, expanded: Boolean, onExpansionIconClick: () -> Unit, modifier: Modifier = Modifier) {
     Column(modifier.fillMaxWidth()) {
         val color = MaterialTheme.colorScheme.secondary
         ListItem(
@@ -244,27 +233,24 @@ private fun DateHeader(
             trailingContent = {
                 Crossfade(targetState = expanded) { expanded ->
                     Icon(
-                        painter =
-                            painterResource(
-                                resource =
-                                    if (expanded) {
-                                        Res.drawable.ic_keyboard_arrow_up
-                                    } else {
-                                        Res.drawable.ic_keyboard_arrow_down
-                                    },
-                            ),
+                        painter = painterResource(
+                            resource = if (expanded) {
+                                Res.drawable.ic_keyboard_arrow_up
+                            } else {
+                                Res.drawable.ic_keyboard_arrow_down
+                            },
+                        ),
                         contentDescription = null,
                         tint = color,
                     )
                 }
             },
             colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-            modifier =
-                Modifier.clickable(
-                    interactionSource = null,
-                    indication = null,
-                    onClick = onExpansionIconClick,
-                ),
+            modifier = Modifier.clickable(
+                interactionSource = null,
+                indication = null,
+                onClick = onExpansionIconClick,
+            ),
         )
 
         HorizontalDivider(color = MaterialTheme.colorScheme.outline)
@@ -272,11 +258,7 @@ private fun DateHeader(
 }
 
 @Composable
-private fun DiaryEventItem(
-    event: DiaryUIEvent,
-    onDeleteEventConfirmed: (DiaryUIEvent) -> Unit,
-    modifier: Modifier = Modifier,
-) {
+private fun DiaryEventItem(event: DiaryUIEvent, onDeleteEventConfirmed: (DiaryUIEvent) -> Unit, modifier: Modifier = Modifier) {
     var deleteEventConfirmationDialogIsVisible by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val dismissState = rememberSwipeToDismissBoxState()
@@ -321,10 +303,10 @@ private fun DiaryEventDismissBackground(dismissState: SwipeToDismissBoxState) {
 
     Row(
         modifier =
-            Modifier.fillMaxSize().background(backgroundColor).padding(
-                horizontal = 16.dp,
-                vertical = 8.dp,
-            ),
+        Modifier.fillMaxSize().background(backgroundColor).padding(
+            horizontal = 16.dp,
+            vertical = 8.dp,
+        ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
@@ -340,10 +322,7 @@ private fun DiaryEventDismissBackground(dismissState: SwipeToDismissBoxState) {
 }
 
 @Composable
-private fun DiaryEventItemContent(
-    event: DiaryUIEvent,
-    modifier: Modifier = Modifier,
-) {
+private fun DiaryEventItemContent(event: DiaryUIEvent, modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
         ListItem(
             modifier = Modifier.fillMaxWidth(),
@@ -372,41 +351,46 @@ private fun DiaryEventItemContent(
 }
 
 @Composable
-private fun DeleteEventConfirmationDialog(
-    event: DiaryUIEvent,
-    onDismissRequest: () -> Unit,
-    onDeleteEventConfirmed: (DiaryUIEvent) -> Unit,
-) {
-    AlertDialog(onDismissRequest = onDismissRequest, confirmButton = {
-        TextButton(
-            onClick = {
-                onDeleteEventConfirmed(event)
-                onDismissRequest()
-            },
-            colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
-        ) {
-            Text(stringResource(Res.string.action_delete))
-        }
-    }, dismissButton = {
-        TextButton(onClick = onDismissRequest) {
-            Text(stringResource(Res.string.action_cancel))
-        }
-    }, icon = {
-        Icon(
-            painter = painterResource(Res.drawable.ic_warning),
-            contentDescription = null,
-            tint = MaterialTheme.myHealthColorScheme.warning,
-        )
-    }, title = {
-        Text(stringResource(Res.string.diary_delete_event_title))
-    }, text = {
-        Text(
-            stringResource(
-                Res.string.diary_delete_event_message,
-                event.eventType.eventName.lowercase(),
-                event.localDate.formatWithCurrentLocale(),
-                event.localTime.formatWithCurrentLocale(),
-            ),
-        )
-    })
+private fun DeleteEventConfirmationDialog(event: DiaryUIEvent, onDismissRequest: () -> Unit, onDeleteEventConfirmed: (DiaryUIEvent) -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismissRequest,
+        confirmButton = {
+            TextButton(
+                onClick = {
+                    onDeleteEventConfirmed(event)
+                    onDismissRequest()
+                },
+                colors = ButtonDefaults.textButtonColors(
+                    contentColor = MaterialTheme.colorScheme.error,
+                ),
+            ) {
+                Text(stringResource(Res.string.action_delete))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismissRequest) {
+                Text(stringResource(Res.string.action_cancel))
+            }
+        },
+        icon = {
+            Icon(
+                painter = painterResource(Res.drawable.ic_warning),
+                contentDescription = null,
+                tint = MaterialTheme.myHealthColorScheme.warning,
+            )
+        },
+        title = {
+            Text(stringResource(Res.string.diary_delete_event_title))
+        },
+        text = {
+            Text(
+                stringResource(
+                    Res.string.diary_delete_event_message,
+                    event.eventType.eventName.lowercase(),
+                    event.localDate.formatWithCurrentLocale(),
+                    event.localTime.formatWithCurrentLocale(),
+                ),
+            )
+        },
+    )
 }

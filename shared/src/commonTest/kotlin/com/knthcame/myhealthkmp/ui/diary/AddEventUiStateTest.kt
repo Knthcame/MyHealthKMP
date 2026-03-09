@@ -2,11 +2,11 @@ package com.knthcame.myhealthkmp.ui.diary
 
 import com.knthcame.myhealthkmp.data.diary.model.DiaryEvent.Type.Activity
 import com.knthcame.myhealthkmp.data.diary.model.DiaryEvent.Type.Sleep
-import kotlinx.datetime.LocalDateTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
+import kotlinx.datetime.LocalDateTime
 
 class AddEventUiStateTest {
     private val initialState = AddEventUiState.initial(LocalDateTime(20206, 2, 13, 12, 0))

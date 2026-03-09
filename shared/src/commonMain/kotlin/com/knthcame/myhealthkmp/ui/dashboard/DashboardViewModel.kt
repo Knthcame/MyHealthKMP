@@ -5,19 +5,16 @@ import com.knthcame.myhealthkmp.data.dashboard.repositories.DashboardRepository
 import com.knthcame.myhealthkmp.data.datetime.repositories.DateTimeRepository
 import com.knthcame.myhealthkmp.ui.common.DateTimeStyle
 import com.knthcame.myhealthkmp.ui.common.formatWithCurrentLocale
+import kotlin.time.Instant
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.datetime.toLocalDateTime
-import kotlin.time.Instant
 
-class DashboardViewModel(
-    dashboardRepository: DashboardRepository,
-    private val dateTimeRepository: DateTimeRepository,
-    viewModelScope: CoroutineScope,
-) : ViewModel(viewModelScope) {
+class DashboardViewModel(dashboardRepository: DashboardRepository, private val dateTimeRepository: DateTimeRepository, viewModelScope: CoroutineScope) :
+    ViewModel(viewModelScope) {
     val heartRateState: StateFlow<HeartRateUiState> =
         combine(
             dashboardRepository.currentHeartRate,

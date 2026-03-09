@@ -8,10 +8,7 @@ interface DiaryRepository {
     val diaryEvents: Flow<List<DiaryEvent>>
 
     /** Deletes the corresponding [DiaryEvent]. **/
-    suspend fun delete(
-        type: DiaryEvent.Type,
-        id: Int,
-    )
+    suspend fun delete(type: DiaryEvent.Type, id: Int)
 
     /** Stores a new [DiaryEvent]. **/
     suspend fun save(event: DiaryEvent)

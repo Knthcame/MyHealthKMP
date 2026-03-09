@@ -15,16 +15,15 @@ data class AddEventUiState(
     val isSaved: Boolean,
 ) {
     companion object {
-        fun initial(localDateTime: LocalDateTime) =
-            AddEventUiState(
-                entryDate = localDateTime.date,
-                entryTime = localDateTime.time,
-                entryType = DiaryEvent.Type.entries.first(),
-                value = "",
-                maxSelectableDate = localDateTime.date,
-                maxSelectableTime = localDateTime.time,
-                isSaved = false,
-            )
+        fun initial(localDateTime: LocalDateTime) = AddEventUiState(
+            entryDate = localDateTime.date,
+            entryTime = localDateTime.time,
+            entryType = DiaryEvent.Type.entries.first(),
+            value = "",
+            maxSelectableDate = localDateTime.date,
+            maxSelectableTime = localDateTime.time,
+            isSaved = false,
+        )
     }
 
     val valueIsValid: Boolean
@@ -44,11 +43,10 @@ data class AddEventUiState(
     val isSaveEnabled: Boolean
         get() = value.isNotEmpty() && valueIsValid
 
-    private fun valueIsValid() =
-        when (entryType) {
-            DiaryEvent.Type.Activity -> value.toIntOrNull() != null
-            DiaryEvent.Type.Sleep -> value.toFloatOrNull() != null
-        }
+    private fun valueIsValid() = when (entryType) {
+        DiaryEvent.Type.Activity -> value.toIntOrNull() != null
+        DiaryEvent.Type.Sleep -> value.toFloatOrNull() != null
+    }
 }
 
 enum class AddEventValidationError {
