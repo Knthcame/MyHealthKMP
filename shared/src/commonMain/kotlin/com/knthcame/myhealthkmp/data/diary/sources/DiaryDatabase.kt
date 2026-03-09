@@ -27,9 +27,10 @@ expect object DiaryDatabaseConstructor : RoomDatabaseConstructor<DiaryDatabase> 
     override fun initialize(): DiaryDatabase
 }
 
-fun buildDiaryDatabase(builder: (String) -> RoomDatabase.Builder<DiaryDatabase>): DiaryDatabase = builder("diary.db")
-    // .addMigrations()
-    // .fallbackToDestructiveMigrationOnDowngrade()
-    .setDriver(BundledSQLiteDriver())
-    .setQueryCoroutineContext(Dispatchers.IO)
-    .build()
+fun buildDiaryDatabase(builder: (String) -> RoomDatabase.Builder<DiaryDatabase>): DiaryDatabase =
+    builder("diary.db")
+        // .addMigrations()
+        // .fallbackToDestructiveMigrationOnDowngrade()
+        .setDriver(BundledSQLiteDriver())
+        .setQueryCoroutineContext(Dispatchers.IO)
+        .build()

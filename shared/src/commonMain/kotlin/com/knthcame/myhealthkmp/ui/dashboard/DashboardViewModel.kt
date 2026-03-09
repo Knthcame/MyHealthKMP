@@ -13,8 +13,11 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.datetime.toLocalDateTime
 
-class DashboardViewModel(dashboardRepository: DashboardRepository, private val dateTimeRepository: DateTimeRepository, viewModelScope: CoroutineScope) :
-    ViewModel(viewModelScope) {
+class DashboardViewModel(
+    dashboardRepository: DashboardRepository,
+    private val dateTimeRepository: DateTimeRepository,
+    viewModelScope: CoroutineScope,
+) : ViewModel(viewModelScope) {
     val heartRateState: StateFlow<HeartRateUiState> =
         combine(
             dashboardRepository.currentHeartRate,

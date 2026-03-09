@@ -75,7 +75,11 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun DiaryScreenRoute(onNavigationIconClick: () -> Unit, onFABClicked: () -> Unit, viewModel: DiaryViewModel = koinViewModel()) {
+fun DiaryScreenRoute(
+    onNavigationIconClick: () -> Unit,
+    onFABClicked: () -> Unit,
+    viewModel: DiaryViewModel = koinViewModel(),
+) {
     val events by viewModel.groupedDiaryEvents.collectAsState()
 
     DiaryScreen(
@@ -219,7 +223,12 @@ private fun EmptyDiaryView() {
 }
 
 @Composable
-private fun DateHeader(localDate: LocalDate, expanded: Boolean, onExpansionIconClick: () -> Unit, modifier: Modifier = Modifier) {
+private fun DateHeader(
+    localDate: LocalDate,
+    expanded: Boolean,
+    onExpansionIconClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Column(modifier.fillMaxWidth()) {
         val color = MaterialTheme.colorScheme.secondary
         ListItem(
@@ -258,7 +267,11 @@ private fun DateHeader(localDate: LocalDate, expanded: Boolean, onExpansionIconC
 }
 
 @Composable
-private fun DiaryEventItem(event: DiaryUIEvent, onDeleteEventConfirmed: (DiaryUIEvent) -> Unit, modifier: Modifier = Modifier) {
+private fun DiaryEventItem(
+    event: DiaryUIEvent,
+    onDeleteEventConfirmed: (DiaryUIEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     var deleteEventConfirmationDialogIsVisible by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val dismissState = rememberSwipeToDismissBoxState()
@@ -351,7 +364,11 @@ private fun DiaryEventItemContent(event: DiaryUIEvent, modifier: Modifier = Modi
 }
 
 @Composable
-private fun DeleteEventConfirmationDialog(event: DiaryUIEvent, onDismissRequest: () -> Unit, onDeleteEventConfirmed: (DiaryUIEvent) -> Unit) {
+private fun DeleteEventConfirmationDialog(
+    event: DiaryUIEvent,
+    onDismissRequest: () -> Unit,
+    onDeleteEventConfirmed: (DiaryUIEvent) -> Unit,
+) {
     AlertDialog(
         onDismissRequest = onDismissRequest,
         confirmButton = {

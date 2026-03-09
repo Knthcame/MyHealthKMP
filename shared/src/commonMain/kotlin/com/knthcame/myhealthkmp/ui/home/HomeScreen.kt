@@ -93,7 +93,11 @@ private val bottomBarDestinations: List<HomeDestination> =
 
 @Preview
 @Composable
-fun HomeBottomBar(onTabItemClick: (destination: HomeDestination) -> Unit, currentDestination: NavDestination?, modifier: Modifier = Modifier) {
+fun HomeBottomBar(
+    onTabItemClick: (destination: HomeDestination) -> Unit,
+    currentDestination: NavDestination?,
+    modifier: Modifier = Modifier,
+) {
     NavigationBar(
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
         contentColor = MaterialTheme.colorScheme.primary,
@@ -116,7 +120,11 @@ fun HomeBottomBar(onTabItemClick: (destination: HomeDestination) -> Unit, curren
 }
 
 @Composable
-private fun RowScope.HomeBottomBarItem(destination: HomeDestination, selected: Boolean, onTabItemClick: (destination: HomeDestination) -> Unit) {
+private fun RowScope.HomeBottomBarItem(
+    destination: HomeDestination,
+    selected: Boolean,
+    onTabItemClick: (destination: HomeDestination) -> Unit,
+) {
     NavigationBarItem(
         modifier = Modifier.testTag(destination.toString()),
         selected = selected,

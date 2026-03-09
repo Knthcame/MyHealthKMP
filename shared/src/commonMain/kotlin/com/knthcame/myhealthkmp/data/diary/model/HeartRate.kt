@@ -11,4 +11,8 @@ import kotlin.time.Instant
  * @property timeStamp The date & time when the measurement was done.
  */
 @Entity("HeartRatesTable")
-data class HeartRate(@PrimaryKey(autoGenerate = true) val id: Int = 0, val bpm: Double, val timeStamp: Instant)
+data class HeartRate(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val bpm: Double,
+    val timeStamp: Instant,
+)

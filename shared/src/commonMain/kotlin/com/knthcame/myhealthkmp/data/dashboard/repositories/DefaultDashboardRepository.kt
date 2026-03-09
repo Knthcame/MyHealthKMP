@@ -11,7 +11,8 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
-class DefaultDashboardRepository(diaryDao: DiaryDao, dateTimeRepository: DateTimeRepository) : DashboardRepository {
+class DefaultDashboardRepository(diaryDao: DiaryDao, dateTimeRepository: DateTimeRepository) :
+    DashboardRepository {
     private val graphInterval = 3.hours
     private val timeTicker =
         flow {

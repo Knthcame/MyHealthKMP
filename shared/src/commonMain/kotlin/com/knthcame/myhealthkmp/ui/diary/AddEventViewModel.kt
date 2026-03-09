@@ -21,7 +21,12 @@ import kotlinx.datetime.LocalTime
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
 
-private data class DiaryUserInputsState(val entryDate: LocalDate, val entryTime: LocalTime, val entryType: DiaryEvent.Type, val value: String) {
+private data class DiaryUserInputsState(
+    val entryDate: LocalDate,
+    val entryTime: LocalTime,
+    val entryType: DiaryEvent.Type,
+    val value: String,
+) {
     companion object {
         fun default(localDateTime: LocalDateTime) = DiaryUserInputsState(
             entryDate = localDateTime.date,
