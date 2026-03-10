@@ -408,9 +408,15 @@ private class AddEventSelectableDates(private val maxSelectableDate: LocalDate) 
         val utcMaxTimeMillis =
             LocalDateTime(
                 date = maxSelectableDate,
-                time = LocalTime(23, 59, 59),
+                time = LocalTime(MAX_HOUR, MAX_MINUTE, MAX_SECOND),
             ).toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
 
         return utcTimeMillis <= utcMaxTimeMillis
+    }
+
+    companion object {
+        private const val MAX_HOUR = 23
+        private const val MAX_MINUTE = 59
+        private const val MAX_SECOND = 59
     }
 }
