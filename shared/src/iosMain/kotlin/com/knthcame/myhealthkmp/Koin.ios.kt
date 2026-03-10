@@ -24,12 +24,11 @@ actual val platformModule: Module =
  * application module, alongside the [sharedModule] and [platformModule].
  */
 @Suppress("unused") // Called from Swift
-fun initKoinIos(): KoinApplication =
-    initKoin {
-        module {
-            // Nothing here yet.
-        }
+fun initKoinIos(): KoinApplication = initKoin {
+    module {
+        // Nothing here yet.
     }
+}
 
 /** Exposes container resolved instances to swift */
 @Suppress("unused") // Called from Swift

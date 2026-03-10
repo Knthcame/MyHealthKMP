@@ -49,10 +49,9 @@ actual fun LocalTime.formatWithCurrentLocale(timeStyle: DateTimeStyle): String {
     return formatter.stringFromDate(dateTime)
 }
 
-private fun DateTimeStyle.toPlatform(): ULong =
-    when (this) {
-        DateTimeStyle.Short -> NSDateFormatterShortStyle
-        DateTimeStyle.Medium -> NSDateFormatterMediumStyle
-        DateTimeStyle.Long -> NSDateFormatterLongStyle
-        DateTimeStyle.Full -> NSDateFormatterFullStyle
-    }
+private fun DateTimeStyle.toPlatform(): ULong = when (this) {
+    DateTimeStyle.Short -> NSDateFormatterShortStyle
+    DateTimeStyle.Medium -> NSDateFormatterMediumStyle
+    DateTimeStyle.Long -> NSDateFormatterLongStyle
+    DateTimeStyle.Full -> NSDateFormatterFullStyle
+}

@@ -27,10 +27,9 @@ import org.koin.dsl.module
  *
  * @param appModule additional module from the app project.
  */
-fun initKoin(appModule: () -> Module): KoinApplication =
-    startKoin {
-        modules(appModule(), platformModule, sharedModule)
-    }
+fun initKoin(appModule: () -> Module): KoinApplication = startKoin {
+    modules(appModule(), platformModule, sharedModule)
+}
 
 val sharedModule =
     module {

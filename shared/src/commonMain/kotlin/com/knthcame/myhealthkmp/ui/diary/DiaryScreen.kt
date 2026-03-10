@@ -127,11 +127,7 @@ fun DiaryScreen(
 }
 
 @Composable
-private fun AddEventButton(
-    modifier: Modifier = Modifier,
-    expanded: Boolean,
-    onClick: () -> Unit,
-) {
+private fun AddEventButton(modifier: Modifier = Modifier, expanded: Boolean, onClick: () -> Unit) =
     ExtendedFloatingActionButton(
         text = {
             Text(stringResource(Res.string.diary_add_event_title))
@@ -143,7 +139,6 @@ private fun AddEventButton(
         modifier = modifier,
         expanded = expanded,
     )
-}
 
 @Composable
 @OptIn(ExperimentalFoundationApi::class)
@@ -161,7 +156,9 @@ private fun ColumnScope.DiaryEventsList(
 
     val expandedStateSaver = mutableStateMapSaver<LocalDate, Boolean>()
 
-    val expandedState: MutableMap<LocalDate, Boolean> by rememberSaveable(stateSaver = expandedStateSaver) {
+    val expandedState: MutableMap<LocalDate, Boolean> by rememberSaveable(
+        stateSaver = expandedStateSaver,
+    ) {
         mutableStateOf(mutableStateMapOf())
     }
 
@@ -179,10 +176,9 @@ private fun ColumnScope.DiaryEventsList(
                     onExpansionIconClick = {
                         expandedState[localDate] = !expanded
                     },
-                    modifier =
-                        Modifier
-                            .background(MaterialTheme.colorScheme.background)
-                            .padding(vertical = 4.dp),
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.background)
+                        .padding(vertical = 4.dp),
                 )
             }
 
@@ -205,23 +201,23 @@ private fun ColumnScope.DiaryEventsList(
 }
 
 @Composable
-private fun EmptyDiaryView() {
-    Column(
-        Modifier.fillMaxSize().padding(32.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp, alignment = Alignment.CenterVertically),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Image(
-            painter = painterResource(Res.drawable.ic_empty_list),
-            contentDescription = null,
-            modifier = Modifier.size(100.dp),
-        )
-        Text(
-            text = stringResource(Res.string.diary_empty_list_header),
-            style = MaterialTheme.typography.headlineMedium,
-        )
-        Text(stringResource(Res.string.diary_empty_list_message), textAlign = TextAlign.Center)
-    }
+private fun EmptyDiaryView() = Column(
+    modifier = Modifier
+        .fillMaxSize()
+        .padding(32.dp),
+    verticalArrangement = Arrangement.spacedBy(8.dp, alignment = Alignment.CenterVertically),
+    horizontalAlignment = Alignment.CenterHorizontally,
+) {
+    Image(
+        painter = painterResource(Res.drawable.ic_empty_list),
+        contentDescription = null,
+        modifier = Modifier.size(100.dp),
+    )
+    Text(
+        text = stringResource(Res.string.diary_empty_list_header),
+        style = MaterialTheme.typography.headlineMedium,
+    )
+    Text(stringResource(Res.string.diary_empty_list_message), textAlign = TextAlign.Center)
 }
 
 @Composable
@@ -230,45 +226,40 @@ private fun DateHeader(
     expanded: Boolean,
     onExpansionIconClick: () -> Unit,
     modifier: Modifier = Modifier,
-) {
-    Column(modifier.fillMaxWidth()) {
-        val color = MaterialTheme.colorScheme.secondary
-        ListItem(
-            headlineContent = {
-                Text(
-                    text = localDate.formatWithCurrentLocale(),
-                    style = MaterialTheme.typography.titleMedium.copy(color),
-                    color = color,
+) = Column(modifier.fillMaxWidth()) {
+    val color = MaterialTheme.colorScheme.secondary
+    ListItem(
+        headlineContent = {
+            Text(
+                text = localDate.formatWithCurrentLocale(),
+                style = MaterialTheme.typography.titleMedium.copy(color),
+                color = color,
+            )
+        },
+        trailingContent = {
+            Crossfade(targetState = expanded) { expanded ->
+                Icon(
+                    painter = painterResource(
+                        resource = if (expanded) {
+                            Res.drawable.ic_keyboard_arrow_up
+                        } else {
+                            Res.drawable.ic_keyboard_arrow_down
+                        },
+                    ),
+                    contentDescription = null,
+                    tint = color,
                 )
-            },
-            trailingContent = {
-                Crossfade(targetState = expanded) { expanded ->
-                    Icon(
-                        painter =
-                            painterResource(
-                                resource =
-                                    if (expanded) {
-                                        Res.drawable.ic_keyboard_arrow_up
-                                    } else {
-                                        Res.drawable.ic_keyboard_arrow_down
-                                    },
-                            ),
-                        contentDescription = null,
-                        tint = color,
-                    )
-                }
-            },
-            colors = ListItemDefaults.colors(containerColor = Color.Transparent),
-            modifier =
-                Modifier.clickable(
-                    interactionSource = null,
-                    indication = null,
-                    onClick = onExpansionIconClick,
-                ),
-        )
+            }
+        },
+        colors = ListItemDefaults.colors(containerColor = Color.Transparent),
+        modifier = Modifier.clickable(
+            interactionSource = null,
+            indication = null,
+            onClick = onExpansionIconClick,
+        ),
+    )
 
-        HorizontalDivider(color = MaterialTheme.colorScheme.outline)
-    }
+    HorizontalDivider(color = MaterialTheme.colorScheme.outline)
 }
 
 @Composable
@@ -311,17 +302,18 @@ private fun DiaryEventItem(
 
 @Composable
 private fun DiaryEventDismissBackground(dismissState: SwipeToDismissBoxState) {
-    val backgroundColor =
-        when (dismissState.dismissDirection) {
-            SwipeToDismissBoxValue.EndToStart -> MaterialTheme.colorScheme.errorContainer
-            else -> Color.Transparent
-        }
+    val backgroundColor = when (dismissState.dismissDirection) {
+        SwipeToDismissBoxValue.EndToStart -> MaterialTheme.colorScheme.errorContainer
+        else -> Color.Transparent
+    }
     val deleteIconColorIsVisible =
         dismissState.dismissDirection == SwipeToDismissBoxValue.EndToStart
 
     Row(
-        modifier =
-            Modifier.fillMaxSize().background(backgroundColor).padding(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(backgroundColor)
+            .padding(
                 horizontal = 16.dp,
                 vertical = 8.dp,
             ),
@@ -340,10 +332,7 @@ private fun DiaryEventDismissBackground(dismissState: SwipeToDismissBoxState) {
 }
 
 @Composable
-private fun DiaryEventItemContent(
-    event: DiaryUIEvent,
-    modifier: Modifier = Modifier,
-) {
+private fun DiaryEventItemContent(event: DiaryUIEvent, modifier: Modifier = Modifier) =
     Column(modifier = modifier) {
         ListItem(
             modifier = Modifier.fillMaxWidth(),
@@ -369,37 +358,43 @@ private fun DiaryEventItemContent(
 
         HorizontalDivider()
     }
-}
 
 @Composable
 private fun DeleteEventConfirmationDialog(
     event: DiaryUIEvent,
     onDismissRequest: () -> Unit,
     onDeleteEventConfirmed: (DiaryUIEvent) -> Unit,
-) {
-    AlertDialog(onDismissRequest = onDismissRequest, confirmButton = {
+) = AlertDialog(
+    onDismissRequest = onDismissRequest,
+    confirmButton = {
         TextButton(
             onClick = {
                 onDeleteEventConfirmed(event)
                 onDismissRequest()
             },
-            colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error),
+            colors = ButtonDefaults.textButtonColors(
+                contentColor = MaterialTheme.colorScheme.error,
+            ),
         ) {
             Text(stringResource(Res.string.action_delete))
         }
-    }, dismissButton = {
+    },
+    dismissButton = {
         TextButton(onClick = onDismissRequest) {
             Text(stringResource(Res.string.action_cancel))
         }
-    }, icon = {
+    },
+    icon = {
         Icon(
             painter = painterResource(Res.drawable.ic_warning),
             contentDescription = null,
             tint = MaterialTheme.myHealthColorScheme.warning,
         )
-    }, title = {
+    },
+    title = {
         Text(stringResource(Res.string.diary_delete_event_title))
-    }, text = {
+    },
+    text = {
         Text(
             stringResource(
                 Res.string.diary_delete_event_message,
@@ -408,5 +403,5 @@ private fun DeleteEventConfirmationDialog(
                 event.localTime.formatWithCurrentLocale(),
             ),
         )
-    })
-}
+    },
+)

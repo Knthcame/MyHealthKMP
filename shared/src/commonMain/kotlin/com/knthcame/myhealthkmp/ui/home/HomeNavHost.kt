@@ -23,10 +23,7 @@ data object Diary : HomeDestination
 data object Settings : HomeDestination
 
 @Composable
-fun HomeNavHost(
-    navController: NavHostController,
-    modifier: Modifier = Modifier,
-) {
+fun HomeNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(
         navController = navController,
         startDestination = Dashboard,

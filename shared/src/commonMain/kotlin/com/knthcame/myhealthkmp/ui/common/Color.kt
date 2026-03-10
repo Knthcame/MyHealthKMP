@@ -22,9 +22,8 @@ import androidx.compose.ui.graphics.luminance
  * @return The monochrome contrast color for the provided color.
  */
 @Composable
-fun resolveMonoChromeFromLuminance(color: Color): Color =
-    if (color.luminance() > 0.6f) {
-        MaterialTheme.colorScheme.onSurface
-    } else {
-        MaterialTheme.colorScheme.inverseOnSurface
-    }
+fun resolveMonoChromeFromLuminance(color: Color): Color = if (color.luminance() > 0.6f) {
+    MaterialTheme.colorScheme.onSurface
+} else {
+    MaterialTheme.colorScheme.inverseOnSurface
+}

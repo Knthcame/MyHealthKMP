@@ -19,6 +19,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
+import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -110,7 +111,10 @@ fun AddEventScreen(
         onNavigationIconClick = onNavigationIconClick,
     ) { padding ->
         Column(
-            modifier = Modifier.fillMaxSize().padding(padding).padding(16.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             EventDatePicker(
@@ -149,25 +153,18 @@ fun AddEventScreen(
 }
 
 @Composable
-private fun getErrorMessage(errorType: AddEventValidationError) =
-    when (errorType) {
-        AddEventValidationError.None -> null
-        AddEventValidationError.InvalidNumber -> stringResource(Res.string.validation_error_invalid_number)
-    }
+private fun getErrorMessage(errorType: AddEventValidationError) = when (errorType) {
+    AddEventValidationError.None -> null
+    AddEventValidationError.InvalidNumber -> stringResource(
+        Res.string.validation_error_invalid_number,
+    )
+}
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-/**
- * A readonly [TextField] that shows a [DatePickerDialog] when focused.
- *
- * @param date the date shown on the text field.
- * @param maxSelectableDate the maximum date that can be selected.
- * @param onValueSelected function executed when a date is selected and confirmed.
- */
 private fun EventDatePicker(
     date: LocalDate,
     maxSelectableDate: LocalDate,
-    onValueSelected: (millisecondsSinceEpoch: Long) -> Unit,
+    onValueSelected: (Long) -> Unit,
 ) {
     var showDatePicker by remember { mutableStateOf(false) }
     Column {
@@ -175,35 +172,19 @@ private fun EventDatePicker(
         TextField(
             value = date.formatWithCurrentLocale(),
             onValueChange = { },
-            trailingIcon = {
-                Icon(painterResource(Res.drawable.ic_date_range), null)
-            },
+            trailingIcon = { Icon(painterResource(Res.drawable.ic_date_range), null) },
             readOnly = true,
-            modifier =
-                Modifier
-                    .onFocusChanged { focusState ->
-                        showDatePicker = focusState.isFocused
-                    }.fillMaxWidth(),
+            modifier = Modifier
+                .onFocusChanged { focusState ->
+                    showDatePicker = focusState.isFocused
+                }
+                .fillMaxWidth(),
         )
     }
 
-    val datePickerState =
-        rememberDatePickerState(
-            selectableDates =
-                object : SelectableDates {
-                    override fun isSelectableYear(year: Int): Boolean = year <= maxSelectableDate.year
-
-                    override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-                        val utcMaxTimeMillis =
-                            LocalDateTime(
-                                date = maxSelectableDate,
-                                time = LocalTime(23, 59, 59),
-                            ).toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
-
-                        return utcTimeMillis <= utcMaxTimeMillis
-                    }
-                },
-        )
+    val datePickerState = rememberDatePickerState(
+        selectableDates = AddEventSelectableDates(maxSelectableDate),
+    )
     val focusManager = LocalFocusManager.current
     val onDismiss = {
         showDatePicker = false
@@ -211,21 +192,35 @@ private fun EventDatePicker(
     }
 
     if (showDatePicker) {
-        DatePickerDialog(onDismissRequest = onDismiss, confirmButton = {
-            TextButton(onClick = {
+        EventDatePickerDialog(onDismiss, datePickerState, onValueSelected)
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun EventDatePickerDialog(
+    onDismiss: () -> Unit,
+    datePickerState: DatePickerState,
+    onValueSelected: (Long) -> Unit,
+) = DatePickerDialog(
+    onDismissRequest = onDismiss,
+    confirmButton = {
+        TextButton(
+            onClick = {
                 datePickerState.selectedDateMillis?.let(onValueSelected)
                 onDismiss()
-            }) {
-                Text(stringResource(Res.string.action_ok))
-            }
-        }, dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(Res.string.action_cancel))
-            }
-        }) {
-            DatePicker(datePickerState)
+            },
+        ) {
+            Text(stringResource(Res.string.action_ok))
         }
-    }
+    },
+    dismissButton = {
+        TextButton(onClick = onDismiss) {
+            Text(stringResource(Res.string.action_cancel))
+        }
+    },
+) {
+    DatePicker(datePickerState)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -236,10 +231,7 @@ private fun EventDatePicker(
  * @param time the time of day shown on the text field.
  * @param onValueSelected function executed when a time of day is selected and confirmed.
  */
-private fun EventTimePicker(
-    time: LocalTime,
-    onValueSelected: (hour: Int, minute: Int) -> Unit,
-) {
+private fun EventTimePicker(time: LocalTime, onValueSelected: (hour: Int, minute: Int) -> Unit) {
     var showTimePicker by remember { mutableStateOf(false) }
     Column {
         Text(stringResource(Res.string.add_event_time_picker_title))
@@ -250,8 +242,9 @@ private fun EventTimePicker(
                 Icon(painterResource(Res.drawable.ic_clock), null)
             },
             readOnly = true,
-            modifier =
-                Modifier.fillMaxWidth().onFocusChanged { focusState ->
+            modifier = Modifier
+                .fillMaxWidth()
+                .onFocusChanged { focusState ->
                     showTimePicker = focusState.isFocused
                 },
         )
@@ -343,13 +336,13 @@ private fun EventTypeItem(
             )
 
             val textColor by animateColorAsState(
-                if (isSelected) {
+                targetValue = if (isSelected) {
                     resolveMonoChromeFromLuminance(backgroundColor)
                 } else {
                     MaterialTheme.colorScheme.onSurfaceVariant
                 },
             )
-            Text(item.eventName, color = textColor)
+            Text(text = item.eventName, color = textColor)
         }
     }
 }
@@ -361,39 +354,34 @@ private fun EventValueTextField(
     isError: Boolean,
     errorMessage: String?,
     onValueChange: (String) -> Unit,
-) {
-    Column {
-        val titleResource =
-            when (entryType) {
-                DiaryEvent.Type.Activity -> Res.string.add_event_activity_text_field_title
-                DiaryEvent.Type.Sleep -> Res.string.add_event_sleep_text_field_title
-            }
-
-        Text(stringResource(titleResource))
-
-        TextField(
-            value = value,
-            onValueChange = onValueChange,
-            isError = isError,
-            supportingText =
-                errorMessage?.let {
-                    { Text(errorMessage) }
-                },
-            placeholder = {
-                Text(stringResource(Res.string.placeholder))
-            },
-            keyboardOptions =
-                KeyboardOptions.Default.copy(
-                    keyboardType = KeyboardType.Decimal,
-                    imeAction = ImeAction.Done,
-                ),
-            singleLine = true,
-            trailingIcon = {
-                Text(entryType.unit)
-            },
-            modifier = Modifier.fillMaxWidth(),
-        )
+) = Column {
+    val titleResource = when (entryType) {
+        DiaryEvent.Type.Activity -> Res.string.add_event_activity_text_field_title
+        DiaryEvent.Type.Sleep -> Res.string.add_event_sleep_text_field_title
     }
+
+    Text(stringResource(titleResource))
+
+    TextField(
+        value = value,
+        onValueChange = onValueChange,
+        isError = isError,
+        supportingText = errorMessage?.let {
+            { Text(errorMessage) }
+        },
+        placeholder = {
+            Text(stringResource(Res.string.placeholder))
+        },
+        keyboardOptions = KeyboardOptions.Default.copy(
+            keyboardType = KeyboardType.Decimal,
+            imeAction = ImeAction.Done,
+        ),
+        singleLine = true,
+        trailingIcon = {
+            Text(entryType.unit)
+        },
+        modifier = Modifier.fillMaxWidth(),
+    )
 }
 
 @Composable
@@ -401,16 +389,34 @@ private fun SaveEventButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+) = Button(
+    onClick = onClick,
+    modifier = modifier,
+    enabled = enabled,
 ) {
-    Button(
-        onClick = onClick,
-        modifier = modifier,
-        enabled = enabled,
-    ) {
-        Text(
-            text = stringResource(Res.string.action_save),
-            modifier = Modifier.fillMaxWidth(),
-            textAlign = TextAlign.Center,
-        )
+    Text(
+        text = stringResource(Res.string.action_save),
+        modifier = Modifier.fillMaxWidth(),
+        textAlign = TextAlign.Center,
+    )
+}
+
+private class AddEventSelectableDates(private val maxSelectableDate: LocalDate) : SelectableDates {
+    override fun isSelectableYear(year: Int): Boolean = year <= maxSelectableDate.year
+
+    override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+        val utcMaxTimeMillis =
+            LocalDateTime(
+                date = maxSelectableDate,
+                time = LocalTime(MAX_HOUR, MAX_MINUTE, MAX_SECOND),
+            ).toInstant(TimeZone.currentSystemDefault()).toEpochMilliseconds()
+
+        return utcTimeMillis <= utcMaxTimeMillis
+    }
+
+    companion object {
+        private const val MAX_HOUR = 23
+        private const val MAX_MINUTE = 59
+        private const val MAX_SECOND = 59
     }
 }

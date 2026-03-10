@@ -11,9 +11,8 @@ import androidx.compose.runtime.snapshots.SnapshotStateMap
  * @param K the type of the pair's key.
  * @param V the type of the pair's value.
  */
-fun <K, V> mutableStateMapSaver() =
-    listSaver(save = { map ->
-        map.map { entry -> entry.key to entry.value }
-    }, restore = { list ->
-        mutableStateMapOf<K, V>().apply { putAll(list.associate { it }) }
-    })
+fun <K, V> mutableStateMapSaver() = listSaver(save = { map ->
+    map.map { entry -> entry.key to entry.value }
+}, restore = { list ->
+    mutableStateMapOf<K, V>().apply { putAll(list.associate { it }) }
+})

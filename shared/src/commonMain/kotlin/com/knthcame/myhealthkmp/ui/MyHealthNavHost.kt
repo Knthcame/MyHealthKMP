@@ -15,10 +15,7 @@ sealed interface TopLevelDestination
 data object Home : TopLevelDestination
 
 @Composable
-fun MyHealthNavHost(
-    navController: NavHostController,
-    modifier: Modifier = Modifier,
-) {
+fun MyHealthNavHost(navController: NavHostController, modifier: Modifier = Modifier) {
     NavHost(
         navController = navController,
         startDestination = Home,
