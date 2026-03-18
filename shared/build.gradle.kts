@@ -11,7 +11,6 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinXSerialization)
     alias(libs.plugins.kover)
-    alias(libs.plugins.skie)
     alias(libs.plugins.mokkery)
     alias(libs.plugins.ksp)
     alias(libs.plugins.androidx.room)
@@ -19,7 +18,7 @@ plugins {
 }
 
 kotlin {
-    androidLibrary {
+    android {
         namespace = "com.knthcame.myhealthkmp.shared"
         compileSdk =
             libs.versions.android.compileSdk
@@ -80,6 +79,10 @@ kotlin {
         testImplementation(libs.kotlin.test)
         testImplementation(libs.kotlinx.coroutines.test)
         testImplementation(libs.turbine)
+    }
+
+    compilerOptions {
+        freeCompilerArgs.add("-Xexpect-actual-classes")
     }
 }
 

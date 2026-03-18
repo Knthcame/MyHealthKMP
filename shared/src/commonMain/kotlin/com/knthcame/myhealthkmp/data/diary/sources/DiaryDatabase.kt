@@ -22,7 +22,7 @@ abstract class DiaryDatabase : RoomDatabase() {
 }
 
 // The Room compiler generates the `actual` implementations.
-@Suppress("NO_ACTUAL_FOR_EXPECT", "EXPECT_ACTUAL_CLASSIFIERS_ARE_IN_BETA_WARNING")
+@Suppress("KotlinNoActualForExpect")
 expect object DiaryDatabaseConstructor : RoomDatabaseConstructor<DiaryDatabase> {
     override fun initialize(): DiaryDatabase
 }

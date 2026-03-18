@@ -12,7 +12,6 @@ plugins {
     alias(libs.plugins.kotlinMultiplatform) apply false
     alias(libs.plugins.kotlinXSerialization) apply false
     alias(libs.plugins.kover) apply false
-    alias(libs.plugins.skie) apply false
     alias(libs.plugins.mokkery) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.androidx.room) apply false
@@ -21,7 +20,7 @@ plugins {
 }
 
 subprojects {
-    apply(plugin = "org.jlleitschuh.gradle.ktlint")
+    apply(plugin = rootProject.libs.plugins.ktlint.get().pluginId)
     configure<KtlintExtension> {
         debug.set(true)
         reporters {

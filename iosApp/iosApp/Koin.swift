@@ -10,7 +10,7 @@ import ComposeApp
 import Foundation
 
 @MainActor func startKoin() {
-    let koinApp = doInitKoinIos()
+    let koinApp = Koin_iosKt.doInitKoinIos()
     _koin = koinApp.koin
 }
 
