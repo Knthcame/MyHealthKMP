@@ -3,6 +3,7 @@ import dev.detekt.gradle.DetektCreateBaselineTask
 import dev.mokkery.MockMode
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.swiftexport.ExperimentalSwiftExportDsl
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -40,16 +41,15 @@ kotlin {
         }
     }
 
-    listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64(),
-    ).forEach { iosTarget ->
-        iosTarget.binaries.framework {
-            baseName = "ComposeApp"
-            isStatic = true
-            // Required when using NativeSQLiteDriver
-            linkerOpts.add("-lsqlite3")
+    iosArm64()
+    iosSimulatorArm64()
+
+    @OptIn(ExperimentalSwiftExportDsl::class)
+    swiftExport {
+        moduleName = "Shared"
+        flattenPackage = "com.knthcame.myhealthkmp"
+        configure {
+            freeCompilerArgs.add("-Xexpect-actual-classes")
         }
     }
 
@@ -114,7 +114,6 @@ dependencies {
     androidRuntimeClasspath(libs.jetbrains.compose.ui.tooling)
     add("kspAndroid", libs.androidx.room.compiler)
     add("kspIosSimulatorArm64", libs.androidx.room.compiler)
-    add("kspIosX64", libs.androidx.room.compiler)
     add("kspIosArm64", libs.androidx.room.compiler)
     add("kspDesktop", libs.androidx.room.compiler)
 }
