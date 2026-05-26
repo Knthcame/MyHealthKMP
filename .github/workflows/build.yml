@@ -48,7 +48,7 @@ jobs:
           --build-cache --parallel --continue
 
       - name: Publish Kotlin test results
-        uses: EnricoMi/publish-unit-test-result-action/macos@27d65e188ec43221b20d26de30f4892fad91df2f
+        uses: EnricoMi/publish-unit-test-result-action/macos@c950f6fb443cb5af20a377fd0dfaa78838901040
         if: always()
         with:
           files: '**/test-results/**/*.xml'
@@ -128,7 +128,7 @@ jobs:
 #        if: always()
 
       - name: Publish Swift test results
-        uses: EnricoMi/publish-unit-test-result-action/macos@27d65e188ec43221b20d26de30f4892fad91df2f
+        uses: EnricoMi/publish-unit-test-result-action/macos@c950f6fb443cb5af20a377fd0dfaa78838901040
         if: always()
         with:
           files: '**/iosApp/build/reports/**/TEST-*.xml'
@@ -171,7 +171,7 @@ jobs:
           script: ./gradlew clean connectedAndroidTest
 
       - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action/macos@27d65e188ec43221b20d26de30f4892fad91df2f
+        uses: EnricoMi/publish-unit-test-result-action/macos@c950f6fb443cb5af20a377fd0dfaa78838901040
         if: always()
         with:
           files: '**/androidTest-results/**/*.xml'
