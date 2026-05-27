@@ -1,5 +1,6 @@
 package com.knthcame.myhealthkmp.ui.settings
 
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,6 +21,11 @@ fun SettingsScreen(onNavigationIconClick: () -> Unit) {
         topBarTitle = stringResource(Res.string.settings_title),
         onNavigationIconClick = onNavigationIconClick,
     ) { padding ->
-        Text("Settings", modifier = Modifier.padding(padding))
+        Text(
+            text = "Settings",
+            modifier = Modifier
+                .padding(padding)
+                .consumeWindowInsets(padding),
+        )
     }
 }
