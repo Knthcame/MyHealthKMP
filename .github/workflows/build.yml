@@ -16,7 +16,7 @@ jobs:
       checks: write
       pull-requests: write
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
 
@@ -27,7 +27,7 @@ jobs:
           java-version: '17'
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@f29f5a9d7b09a7c6b29859002d29d24e1674c884
+        uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e
 
       - name: Install SwiftLint
         run: brew install swiftlint
@@ -48,21 +48,21 @@ jobs:
           --build-cache --parallel --continue
 
       - name: Publish Kotlin test results
-        uses: EnricoMi/publish-unit-test-result-action/macos@27d65e188ec43221b20d26de30f4892fad91df2f
+        uses: EnricoMi/publish-unit-test-result-action/macos@c950f6fb443cb5af20a377fd0dfaa78838901040
         if: always()
         with:
           files: '**/test-results/**/*.xml'
           check_name: 'Kotlin test results'
 
       - name: Archive Kotlin test results
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         if: always()
         with:
           name: kotlin-unit-test-results
           path: '**/test-results/**/*.xml'
 
       - name: Install sonar cli
-        uses: Warchant/setup-sonar-scanner@7a89a4622e5c3b5d9c9673cf04f15f005f69d2eb
+        uses: Warchant/setup-sonar-scanner@911ef81b14b267a261d70ac94e43d3c822a709d5
         if: always()
 
       - name: Get ktlint reports file paths
@@ -87,7 +87,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checking out branch
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
 
       - name: Setup Java
         uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654
@@ -96,7 +96,7 @@ jobs:
           java-version: '17'
 
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@f29f5a9d7b09a7c6b29859002d29d24e1674c884
+        uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e
 
       - name: Select Xcode 26.2
         run: sudo xcode-select -s /Applications/Xcode_26.2.app
@@ -128,14 +128,14 @@ jobs:
 #        if: always()
 
       - name: Publish Swift test results
-        uses: EnricoMi/publish-unit-test-result-action/macos@27d65e188ec43221b20d26de30f4892fad91df2f
+        uses: EnricoMi/publish-unit-test-result-action/macos@c950f6fb443cb5af20a377fd0dfaa78838901040
         if: always()
         with:
           files: '**/iosApp/build/reports/**/TEST-*.xml'
           check_name: 'Swift test results'
 
       - name: Archive Swift test results
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         if: always()
         with:
           name: swift-test-results
@@ -149,7 +149,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checking out branch
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
 
       - name: Setup Java
         uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654
@@ -164,21 +164,21 @@ jobs:
           sudo udevadm trigger --name-match=kvm
 
       - name: Run Android instrumented tests
-        uses: reactivecircus/android-emulator-runner@b530d96654c385303d652368551fb075bc2f0b6b
+        uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a
         with:
           api-level: 34
           arch: x86_64
           script: ./gradlew clean connectedAndroidTest
 
       - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action/macos@27d65e188ec43221b20d26de30f4892fad91df2f
+        uses: EnricoMi/publish-unit-test-result-action/macos@c950f6fb443cb5af20a377fd0dfaa78838901040
         if: always()
         with:
           files: '**/androidTest-results/**/*.xml'
           check_name: 'Android instrumented test results'
 
       - name: Archive test results
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: android-instrumented-test-results
           path: '**/androidTest-results/**/*.xml'
@@ -191,7 +191,7 @@ jobs:
       pull-requests: write
     steps:
       - name: Checking out branch
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10
 
       - name: Setup Java
         uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654
@@ -200,7 +200,7 @@ jobs:
           java-version: '17'
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@9fc6c4e9069bf8d3d10b2204b1fb8f6ef7065407
+        uses: android-actions/setup-android@40fd30fb8d7440372e1316f5d1809ec01dcd3699
 
       - name: Assemble release build
         run: ./gradlew assembleRelease
@@ -210,7 +210,7 @@ jobs:
         run: echo "apkfile=$(find androidApp/build/outputs/apk/release/*.apk)" >> $GITHUB_OUTPUT
 
       - name: Upload Release Build to Artifacts
-        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
         with:
           name: release-artifacts
           path: ${{ steps.releaseApk.outputs.apkfile }}
