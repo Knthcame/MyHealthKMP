@@ -2,6 +2,7 @@ package com.knthcame.myhealthkmp.ui.home
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -64,12 +65,12 @@ fun HomeScreen(onTabItemClick: (tab: HomeDestination) -> Unit, navController: Na
     val focusManager = LocalFocusManager.current
 
     Scaffold(
-        modifier =
-        Modifier.clickable(
-            interactionSource = null,
-            indication = null,
-            onClick = { focusManager.clearFocus() },
-        ),
+        modifier = Modifier
+            .clickable(
+                interactionSource = null,
+                indication = null,
+                onClick = { focusManager.clearFocus() },
+            ),
         bottomBar = {
             HomeBottomBar(
                 onTabItemClick = onTabItemClick,
@@ -79,7 +80,9 @@ fun HomeScreen(onTabItemClick: (tab: HomeDestination) -> Unit, navController: Na
     ) { padding ->
         HomeNavHost(
             navController = navController,
-            modifier = Modifier.padding(padding),
+            modifier = Modifier
+                .padding(padding)
+                .consumeWindowInsets(padding),
         )
     }
 }
