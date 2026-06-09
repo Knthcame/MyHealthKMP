@@ -27,4 +27,11 @@ subprojects {
             reporter(ReporterType.CHECKSTYLE)
         }
     }
+    dependencyLocking {
+        lockAllConfigurations()
+    }
+}
+
+dependencyLocking {
+    lockAllConfigurations()
 }
