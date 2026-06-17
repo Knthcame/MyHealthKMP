@@ -21,7 +21,7 @@ room = "2.8.4"
 sqlite = "2.6.2"
 ksp = "2.3.9"
 ktlint = "14.2.0"
-detekt = "2.0.0-alpha.3"
+detekt = "2.0.0-alpha.4"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
