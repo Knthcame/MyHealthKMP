@@ -1,0 +1,46 @@
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - dependabot/gradle/**
+
+jobs:
+  locksAndVerificationData:
+    name: Update lock file & verification metadata
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+
+      - name: Setup Java
+        uses: actions/setup-java@ad2b38190b15e4d6bdf0c97fb4fca8412226d287
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92
+
+      - name: Run gradle command
+        run: ./gradlew clean
+          dependencies 
+          androidApp:dependencies 
+          desktopApp:dependencies 
+          shared:dependencies 
+          --write-locks 
+          --write-verification-metadata sha256,pgp 
+          --export-keys
+          --build-cache --parallel --continue
+
+      - name: Configure git for commit
+        run: |
+          git config --global user.name "${{ github.actor }}"
+          git config --global user.email "${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com"
+
+      - name: Commit
+        run: |
+          git add gradle/**
+          git add **/*.lockfile
+          git diff-index --cached --quiet HEAD -- || git commit -m "Updated lockfile & verification metadata"
+
+      - name: Push
+        run: git push
