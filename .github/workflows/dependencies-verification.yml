@@ -10,7 +10,7 @@ on:
 jobs:
   locksAndVerificationData:
     name: Update lock file & verification metadata
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     permissions:
       contents: write
     steps:
@@ -28,7 +28,7 @@ jobs:
       - name: Run gradle command
         run: ./gradlew dependencies 
           androidApp:dependencies 
-          desktopApp:testClasses 
+          desktopApp:dependencies 
           shared:dependencies 
           --write-locks 
           --write-verification-metadata sha256,pgp 
