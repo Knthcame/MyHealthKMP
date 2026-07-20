@@ -7,7 +7,7 @@ on:
 jobs:
   locksAndVerificationData:
     name: Update lock file & verification metadata
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
 
@@ -29,7 +29,6 @@ jobs:
           --write-locks 
           --write-verification-metadata sha256,pgp 
           --export-keys
-          --build-cache --parallel --continue
 
       - name: Configure git for commit
         run: |
