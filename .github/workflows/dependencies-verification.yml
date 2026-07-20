@@ -1,13 +1,18 @@
+name: Dependencies verification
+
 on:
-  workflow_dispatch:
   push:
     branches:
-      - dependabot/gradle/**
+      - 'dependabot/gradle/**'
+
+  workflow_dispatch:
 
 jobs:
   locksAndVerificationData:
     name: Update lock file & verification metadata
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
 
@@ -21,8 +26,7 @@ jobs:
         uses: gradle/actions/setup-gradle@3f131e8634966bd73d06cc69884922b02e6faf92
 
       - name: Run gradle command
-        run: ./gradlew clean
-          dependencies 
+        run: ./gradlew dependencies 
           androidApp:dependencies 
           desktopApp:dependencies 
           shared:dependencies 
