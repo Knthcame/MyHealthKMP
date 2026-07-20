@@ -28,7 +28,7 @@ jobs:
       - name: Run gradle command
         run: ./gradlew dependencies 
           androidApp:dependencies 
-          desktopApp:dependencies 
+          desktopApp:testClasses 
           shared:dependencies 
           --write-locks 
           --write-verification-metadata sha256,pgp 
