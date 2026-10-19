@@ -61,7 +61,7 @@ jobs:
           check_name: 'Kotlin test results'
 
       - name: Archive Kotlin test results
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         if: always()
         with:
           name: kotlin-unit-test-results
@@ -141,7 +141,7 @@ jobs:
           check_name: 'Swift test results'
 
       - name: Archive Swift test results
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         if: always()
         with:
           name: swift-test-results
@@ -184,7 +184,7 @@ jobs:
           check_name: 'Android instrumented test results'
 
       - name: Archive test results
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: android-instrumented-test-results
           path: '**/androidTest-results/**/*.xml'
@@ -216,7 +216,7 @@ jobs:
         run: echo "apkfile=$(find androidApp/build/outputs/apk/release/*.apk)" >> $GITHUB_OUTPUT
 
       - name: Upload Release Build to Artifacts
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
         with:
           name: release-artifacts
           path: ${{ steps.releaseApk.outputs.apkfile }}
